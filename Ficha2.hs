@@ -47,17 +47,40 @@ pIt  =  f <$> token "Decl " <*> ident
 
 
 test :: P
-test = R ([
-            Decl "x",
-            Decl "y",
-            Block [
-                Use "y"
-            ],
-            Use "x"
-         ])
+test = R (items)
 
-saveDecl :: P -> ([String],[String])
-saveDecl (R x) =  getDeclUses x
+items :: [It]
+items = [
+    Decl "x",
+    Decl "y",
+    Block [
+        Use "y",
+        Decl "x",
+        Use "z"
+    ],
+    Decl "x",
+    Use "x"
+ ]
+
+type Decl = String
+type Use = String
+type DeclUse = ([Decl], [Use])
+
+analisador :: P -> [It]
+analisador (R its) = analisadorItems its (getDeclUses its) []
+
+analisadorItems :: [It] -> DeclUse -> [Decl] -> [It]
+analisadorItems [] _ _ = []
+analisadorItems ((Block x):xs) declsUses decls = analisadorItems x (declsUses <+> getDeclUses x) [] ++ analisadorItems xs declsUses decls
+analisadorItems ((Decl x):xs) declsUses decls = if isItemValid declsUses decls (Decl x) then analisadorItems xs declsUses (x:decls)  else [(Decl x)] ++ (analisadorItems xs declsUses (x:decls)) 
+analisadorItems ((Use x):xs) declsUses decls = if isItemValid declsUses decls (Use x) then analisadorItems xs declsUses decls  else [(Use x)] ++ analisadorItems xs declsUses decls 
+
+isItemValid :: DeclUse -> [Decl] ->  It -> Bool 
+isItemValid (decl, uses) decls (Use x) | elem x decl = True
+                                       | elem x decls = True
+                                       | otherwise = False
+isItemValid (decl, uses) decls (Decl x) = not (elem x decls)
+isItemValid (decl, uses) decls (Block x) = True
 
 getDeclUses :: Its -> ([String],[String])
 getDeclUses [] = ([], [])
@@ -65,12 +88,6 @@ getDeclUses ((Decl x):xs) = ([x], []) <+> getDeclUses xs
 getDeclUses ((Use x):xs) =  ([], [x]) <+> getDeclUses xs 
 getDeclUses ((Block x): xs) = getDeclUses xs
 
-(<+>) :: ([String], [String]) -> ([String], [String]) -> ([String], [String])
+(<+>) :: DeclUse -> DeclUse -> DeclUse
 (x1,y1) <+> (x2, y2) = (x1 ++ x2 , y1 ++ y2)
 
-
-analisador :: P -> [It]
-analisador (R (x:xs)) = undefined
-
-isItemValid :: ([String], [String]) -> It -> Bool 
-isItemValid ([decl], [uses]) (Use x) = 
