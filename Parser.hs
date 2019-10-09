@@ -28,6 +28,9 @@ token t [] = []
 token t inp = if   take (length t) inp == t 
               then [(t,drop (length t) inp)]
               else []
+      
+token' t = f <$> token t <*> spaces 
+     where f a b = a   
 
 succeed :: r -> Parser s r
 succeed r inp = [ ( r , inp) ]
