@@ -5,7 +5,7 @@ import Parser
 
 ident :: Parser Char String
 ident =  f <$> oneOrMore (satisfy isAlpha) <*> spaces
-   where f a b = a
+   where f a b = a   
 
 data P = R Its
 type Its = [It]
@@ -28,22 +28,21 @@ pp_It (Use n) = "Use " ++ n
 pp_It (Block is) = "[" ++ pp_Its is ++ "]"
 
 pP :: Parser Char P
-pP = f <$> symbol' '[' <*> pIts <*> symbol' ']' 
-    where f _ its _ = R its
+pP = f <$> enclosedBy (symbol' '[') pIts (symbol' ']')   --symbol' '[' <*> pIts <*> symbol' ']' 
+    where f its = R its
 
 pIts :: Parser Char Its
 pIts =  f <$> separatedBy pIt (symbol' ',')
     <|> succeed []
     where f its = its
-          g it = [it]
 
 pIt :: Parser Char It
-pIt  =  f <$> token "Decl " <*> ident
-    <|> g <$> token "Use " <*> ident
-    <|> h <$> symbol' '[' <*> pIts <*> symbol' ']'
+pIt  =  f <$> token' "Decl " <*> ident
+    <|> g <$> token' "Use " <*> ident
+    <|> h <$> enclosedBy (symbol' '[') pIts (symbol' ']')  --symbol' '[' <*> pIts <*> symbol' ']' 
     where f t str = Decl str
           g t str = Use str
-          h s1 its s2 = Block its
+          h its = Block its
 
 
 test :: P
@@ -53,41 +52,49 @@ items :: [It]
 items = [
     Decl "x",
     Decl "y",
+    Decl "x",
     Block [
+        Block[
+            Use "w"
+        ],
         Use "y",
         Decl "x",
         Use "z"
     ],
-    Decl "x",
+    Decl "y",
     Use "x"
  ]
 
-type Decl = String
-type Use = String
-type DeclUse = ([Decl], [Use])
+type Decl = String            -- A variavel declarada
+type Decls = ([Decl], [Decl]) -- ([Declaracao anterior], [Declaracao do nivel atual])
 
 analisador :: P -> [It]
-analisador (R its) = analisadorItems its (getDeclUses its) []
+analisador (R its) = analisadorItems its (getNextDecl its)
 
-analisadorItems :: [It] -> DeclUse -> [Decl] -> [It]
-analisadorItems [] _ _ = []
-analisadorItems ((Block x):xs) declsUses decls = analisadorItems x (declsUses <+> getDeclUses x) [] ++ analisadorItems xs declsUses decls
-analisadorItems ((Decl x):xs) declsUses decls = if isItemValid declsUses decls (Decl x) then analisadorItems xs declsUses (x:decls)  else [(Decl x)] ++ (analisadorItems xs declsUses (x:decls)) 
-analisadorItems ((Use x):xs) declsUses decls = if isItemValid declsUses decls (Use x) then analisadorItems xs declsUses decls  else [(Use x)] ++ analisadorItems xs declsUses decls 
+analisadorItems :: [It] -> Decls -> [It]
+analisadorItems [] _ = []
+analisadorItems ((Block x):xs) decls = analisadorItems x (decls <-> getNextDecl x) ++ analisadorItems xs decls
+analisadorItems ((Decl x):xs) decls = if isItemValid decls (Decl x) then restanteAnalise  else [(Decl x)] ++ restanteAnalise
+       where restanteAnalise = (analisadorItems xs (decls <+> ([] , [x])))
+analisadorItems ((Use x):xs) decls = if isItemValid decls (Use x) then restanteAnalise else [(Use x)] ++ restanteAnalise
+       where restanteAnalise = (analisadorItems xs decls)
 
-isItemValid :: DeclUse -> [Decl] ->  It -> Bool 
-isItemValid (decl, uses) decls (Use x) | elem x decl = True
-                                       | elem x decls = True
-                                       | otherwise = False
-isItemValid (decl, uses) decls (Decl x) = not (elem x decls)
-isItemValid (decl, uses) decls (Block x) = True
+isItemValid :: Decls -> It -> Bool 
+isItemValid (declant, decl) (Use x) | elem x decl = True
+                                    | elem x declant = True
+                                    | otherwise = False
+isItemValid (declant, decl) (Decl x) = not (elem x decl)
+isItemValid (declant, decl) (Block x) = True
 
-getDeclUses :: Its -> ([String],[String])
-getDeclUses [] = ([], [])
-getDeclUses ((Decl x):xs) = ([x], []) <+> getDeclUses xs
-getDeclUses ((Use x):xs) =  ([], [x]) <+> getDeclUses xs 
-getDeclUses ((Block x): xs) = getDeclUses xs
+getNextDecl :: Its -> ([String],[String])
+getNextDecl [] = ([], [])
+getNextDecl ((Decl x):xs) = ([x], []) <+> getNextDecl xs
+getNextDecl ((Use x):xs) =  getNextDecl xs 
+getNextDecl ((Block x): xs) = getNextDecl xs
 
-(<+>) :: DeclUse -> DeclUse -> DeclUse
+(<+>) :: Decls -> Decls -> Decls
 (x1,y1) <+> (x2, y2) = (x1 ++ x2 , y1 ++ y2)
+
+(<->) :: Decls -> Decls -> Decls
+(x1,y1) <-> (x2, y2) = (x1 ++ x2 ++ y1 ++ y2 , [])
 
