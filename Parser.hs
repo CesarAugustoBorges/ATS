@@ -1,11 +1,34 @@
 module Parser where 
 
 import Prelude hiding ((<*>),(<$>))
+import Data.Char
 
 infixl 2 <|>
 infixl 3 <*>
 
 type Parser s r = [s] -> [(r , [s])]
+
+---------------------------- 1.1 -----------------------------
+isDigit' :: Char -> Bool
+isDigit' x = x `elem` ['0'..'9']
+
+number :: Parser Char [Char]
+number  =   f <$> satisfy isDigit'
+       <|>  g <$> satisfy isDigit' <*> number
+  where f a = [a]
+        g a b = a:b
+
+number' :: Parser Char [Char]
+number' = f <$> number <*> spaces
+  where f n s = n
+
+ident :: Parser Char [Char]
+ident =  oneOrMore (satisfy isAlpha)
+
+ident' :: Parser Char [Char]
+ident' =  f <$> ident <*> spaces
+   where f a b = a  
+--------------------------------------------------------------
 
 symbola :: Parser Char Char
 symbola [] = []
@@ -16,6 +39,14 @@ symbol :: Eq a => a -> Parser a a
 symbol s []                 = []
 symbol s (x:xs) | s == x    = [(s,xs)]
                 | otherwise = []
+
+----------------------------- 1.4 ----------------------------
+
+symbol' :: Char -> Parser Char Char
+symbol' a = (\ a b -> a) <$>  symbol a <*> spaces
+
+------------- spaces definido na pŕoxima alínea --------------
+--------------------------------------------------------------
 
 satisfy :: (s -> Bool) -> Parser s s
 satisfy p []                  = []
@@ -29,6 +60,7 @@ token t inp = if   take (length t) inp == t
               then [(t,drop (length t) inp)]
               else []
       
+token' :: [Char] -> Parser Char [Char]
 token' t = f <$> token t <*> spaces 
      where f a b = a   
 
@@ -81,23 +113,31 @@ oneOrMore p =  sf1 <$> p <*> oneOrMore p
         sf2 x = [x]
 -}
 
+---------------------- 1.5 / 1.6 -----------------------------
+
 zeroOrMore :: Parser s r -> Parser s [r]
 zeroOrMore p = sf <$> p <*> zeroOrMore p
              <|> succeed []
   where sf x xs = x : xs
 
+spaces :: Parser Char [Char]
 spaces = zeroOrMore 
           (satisfy (\x -> x `elem` [' ','\t','\n']))
 
-symbol' a = (\ a b -> a) <$>  symbol a <*> spaces
+--------------------------------------------------------------
+------------------------- 1.7 --------------------------------
 
 oneOrMore :: Parser s r -> Parser s [r]
 oneOrMore p = f <$> p <*> zeroOrMore p
    where f a b = a : b
 
+--------------------------------------------------------------
+------------------------- 1.9 --------------------------------
+
 separatedBy :: Parser s a -> Parser s b -> Parser s [a]
 separatedBy pa pb =  f <$> pa <*> pb <*> separatedBy pa pb
                  <|> g <$> pa 
+                 <|> succeed []
    where f a b ab = a:ab
          g a      = [a]
          
@@ -113,6 +153,9 @@ enclosedBy :: Parser s a -> Parser s b -> Parser s c -> Parser s b
 enclosedBy pa pb pc = f <$> pa <*> pb <*> pc
     where f a b c = b
 
+-------------------------------------------------------------
+------------------------- 1.10 -------------------------------
+
 followedBy :: Parser s a -> Parser s b -> Parser s [a]
 followedBy pa pb =  f <$> pa <*> pb <*> followedBy pa pb 
                 <|> g <$> pa <*> pb
@@ -125,4 +168,14 @@ block :: Parser s a -- open delimiter
       -> Parser s f -- close delimiter
       -> Parser s [r]
 block pa pb pr pf = f <$> pa <*> (followedBy pr pb) <*> pf
+    where f a r f = r
+
+--------------------------------------------------------------
+
+list  :: Parser s a -- open delimiter
+      -> Parser s b -- syntactic symbol that separats statements
+      -> Parser s r -- parser of statements
+      -> Parser s f -- close delimiter
+      -> Parser s [r]
+list pa pb pr pf = f <$> pa <*> (separatedBy pr pb) <*> pf
     where f a r f = r
