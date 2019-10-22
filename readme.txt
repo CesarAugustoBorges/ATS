@@ -28,4 +28,8 @@ $ ghci Ficha2.hs
 
 -- Para efetuar a análise semântica de um input
 
-*Main> analisador (R [Use "x",Decl "y",Block[Use "w"],Use "y"])
+*Main> analisador (R [Use "x",Decl "y",Block[Use "w"],Use "y"])~
+
+-- Também é possível testar um input "test" já definido com o analisador semântico
+
+*Main> analisador test
