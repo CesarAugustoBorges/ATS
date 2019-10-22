@@ -113,12 +113,22 @@ oneOrMore p =  sf1 <$> p <*> oneOrMore p
         sf2 x = [x]
 -}
 
----------------------- 1.5 / 1.6 -----------------------------
+------------------------- 1.5 --------------------------------
 
 zeroOrMore :: Parser s r -> Parser s [r]
 zeroOrMore p = sf <$> p <*> zeroOrMore p
              <|> succeed []
   where sf x xs = x : xs
+
+{-
+spaces :: Parser Char [Char]
+spaces = f <$> satisfy (\x -> x `elem` [' ','\t','\n']) <*> spaces
+      <|> succeed []
+      where f s sps = s:sps
+-}
+
+--------------------------------------------------------------
+------------------------- 1.6 --------------------------------
 
 spaces :: Parser Char [Char]
 spaces = zeroOrMore 

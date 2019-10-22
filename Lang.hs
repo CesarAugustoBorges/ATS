@@ -36,6 +36,45 @@ e = MulExp (Const 5) (AddExp (Var "var") (Const 3))
 
 -- 1.3
 
+{-
+pexp :: Parser Char Exp
+pexp =   f <$> pterm
+     <|> g <$> pterm <*> symbol '+' <*> pexp
+     <|> h <$> pterm <*> symbol '-' <*> pexp
+   where f a = a
+         g a b c = AddExp a c
+         h a b c = SubExp a c
+
+pterm :: Parser Char Exp
+pterm =  f <$> pfactor
+     <|> g <$> pfactor <*> symbol '*' <*> pterm
+   where f a = a
+         g a b c = MulExp a c
+
+
+
+pfactor :: Parser Char Exp
+pfactor =   h <$> symbol '(' <*> pexp <*> symbol ')'
+       <|>  i <$> pFinal <*> symbol '<' <*> pFinal
+       <|>  j <$> pFinal <*> symbol '>' <*> pFinal
+       <|>  pFinal
+  where h a e f = OneExp e
+        i e1 s e2 = LThen e1 e2
+        j e1 s e2 = GThen e1 e2
+
+pFinal :: Parser Char Exp
+pFinal =   f <$> number
+      <|>  g <$> ident
+  where f a = Const (read a)
+        g a = Var a
+-}
+
+
+-- 1.4
+
+e1 :: String
+e1 =  "2 * 4 - 34" 
+
 pexp :: Parser Char Exp
 pexp =   f <$> pterm
      <|> g <$> pterm <*> symbol' '+' <*> pexp
@@ -67,14 +106,8 @@ pFinal =   f <$> number'
   where f a = Const (read a)
         g a = Var a
 
--- 1.4
 
-e1 :: String
-e1 =  "2 * 4 - 34" 
-
-
-
--------- ENUNCIADO ---------
+---------------- ENUNCIADO --------------
 
 data Prog = Prog Stats
 data Stats = Stats [Stat]
@@ -101,10 +134,10 @@ instance Show Stat where
 showStat (Assign n e) = n ++ " = " ++ showExp e
 showStat (While e sts) = "while (" ++ showExp e ++ ")\n " ++ "{ " ++ showStats sts ++ "}"
 
------------------------------
+--------------------------------------------
 
 -- 1.8
-
+{-
 pProg :: Parser Char Prog
 pProg = f <$> pStats
   where f stats = Prog stats 
@@ -121,6 +154,7 @@ pStat =  f <$> token' "while (" <*> pexp <*> symbol' ')' <*> symbol' '{' <*> pSt
     <|>  h <$> ident' <*> token' "="  <*> pexp
   where f _ b _ _ d _ = While b d
         h id _ exp = Assign id exp
+-}
 
 ------ Variaveis usadas para testes ------
 
@@ -132,7 +166,7 @@ progTest2 = Prog (Stats [While (LThen (Var "x") (Const 3)) (Stats [Assign "x" (C
 
 
 progString :: [Char]
-progString = "x = 1;\n while (x < 3)\n { x = 3}"
+progString = "x = 1;\n while (x < 3)\n { x = 3 }"
 
 
 progString2 :: [Char]
@@ -142,17 +176,16 @@ progString2 = "x = 2"
 
 -- 1.10
 
-
-pProg2 :: Parser Char Prog
-pProg2 = f <$> pStats2
+pProg :: Parser Char Prog
+pProg = f <$> pStats
   where f stats = Prog stats 
 
-pStats2 :: Parser Char Stats
-pStats2 =  f <$> separatedBy pStat2 (token' ";\n")
+pStats :: Parser Char Stats
+pStats =  f <$> separatedBy pStat (token' ";\n")
   where f lstat = Stats lstat
 
-pStat2 :: Parser Char Stat
-pStat2 =  f <$> token' "while" <*> enclosedBy (symbol' '(') pexp  (symbol' ')') <*> enclosedBy (symbol' '{') pStats2 (symbol' '}')
+pStat :: Parser Char Stat
+pStat =  f <$> token' "while" <*> enclosedBy (symbol' '(') pexp  (symbol' ')') <*> enclosedBy (symbol' '{') pStats (symbol' '}')
      <|>  g <$> ident' <*> symbol' '='  <*> pexp
    where f _ b d  = While b d
          g id _ exp = Assign id exp
