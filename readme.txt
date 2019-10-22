@@ -1,26 +1,31 @@
-//////////////////////////////////  Ficha 1  /////////////////////////////////
+////////////////////////////////// Combinadores de Parsing ////////////////////////////////
 
-$ ghci Lang.hs
+$ ghci Ficha2.hs
 
-1.1 (Parser.hs)
+*********************** Parser ***********************
+-- Para verificar se uma declaração, uso ou bloco colocado em input respeita a sintaxe da linguagem definida
 
-*Main> number "2"
-*Main> number "2380"
-*Main> ident "ficha"
------------------------------------------------------------------------------
+*Main> pIt "Use x"
+*Main> pIt "Decl y"
+*Main> pIt "[Use x, Decl y, Decl z]"
 
-1.2 (Lang.hs)
+-- Para verificar se uma frase da linguagem respeita a sintaxe da linguagem definida
 
-*Main> e
-5 * var + 3
------------------------------------------------------------------------------
+*Main> pP "[Decl x,Decl y,Decl x,Block [Use y,Decl x,Use z],Decl y,Use x]"
 
-1.3 (Lang.hs)
+*********************** Analisador ***********************
+-- Para verificar se uma declaração, uso ou bloco está numa posição válida tendo em conta declarações
+-- O primeiro túpulo representa as declarações do nível atual e o segundo as declarações dos níveis anteriores
+-- Para um bloco o resultado é sempre "True" sendo que pode-se iniciar um bloco em qualquer circunstância
 
-*Main> pexp "(2+1)*3"
------------------------------------------------------------------------------
+*Main> isItemValid (["x","y","z"],["w","x"]) (Use "x")
+*Main> isItemValid (["x","y","z"],["w","x"]) (Decl "x")
+*Main> isItemValid (["x","y","z"],["w","x"]) (Block [Use "x"])
 
-1.4 (Lang.hs)
+-- Para verificar se um conjunto de itens estão numa posição válida tendo em conta declarações já feitas
 
-*Main> pexp e1
------------------------------------------------------------------------------
+*Main> analisadorItems [Use "x",Decl "y",Block[Use "w"],Use "y"] ([],["y"])
+
+-- Para efetuar a análise semântica de um input
+
+*Main> analisador (R [Use "x",Decl "y",Block[Use "w"],Use "y"])
