@@ -11,7 +11,7 @@ $ ghci Ficha2.hs
 
 -- Para verificar se uma frase da linguagem respeita a sintaxe da linguagem definida
 
-*Main> pP "[Decl x,Decl y,Decl x,Block [Use y,Decl x,Use z],Decl y,Use x]"
+*Main> pP "[Decl x,Decl y,Decl x,[Use y,Decl x,Use z],Decl y,Use x]"
 
 *********************** Analisador ***********************
 -- Para verificar se uma declaração, uso ou bloco está numa posição válida tendo em conta declarações
