@@ -26,34 +26,16 @@ pp_It (Decl n) = "Decl " ++ n
 pp_It (Use n) = "Use " ++ n
 pp_It (Block is) = "[" ++ pp_Its is ++ "]"
 
---------------------------------------------------------------
---------------------------- Primeira versão ------------------
+------------------ Parser -------------------
 
 pP :: Parser Char P
-pP = f <$> enclosedBy (symbol' '[') pIts (symbol' ']')   --symbol' '[' <*> pIts <*> symbol' ']' 
+pP = f <$> list (symbol' '[') (symbol' ',') pIt (symbol' ']')
     where f its = R its
-
-pIts :: Parser Char Its
-pIts = separatedBy pIt (symbol' ',')
 
 pIt :: Parser Char It
 pIt  =  f <$> token' "Decl " <*> ident'
-    <|> g <$> token' "Use " <*> ident'
-    <|> h <$> enclosedBy (symbol' '[') pIts (symbol' ']')  --symbol' '[' <*> pIts <*> symbol' ']' 
-    where f t str = Decl str
-          g t str = Use str
-          h its = Block its
-
------------------- Versão mais reduzida (2) -------------------
-
-pP2 :: Parser Char P
-pP2 = f <$> list (symbol' '[') (symbol' ',') pIt2 (symbol' ']')
-    where f its = R its
-
-pIt2 :: Parser Char It
-pIt2  =  f <$> token' "Decl " <*> ident'
      <|> g <$> token' "Use " <*> ident'
-     <|> h <$> pP2  --symbol' '[' <*> pIts <*> symbol' ']' 
+     <|> h <$> pP  --symbol' '[' <*> pIts <*> symbol' ']' 
      where f t str = Decl str
            g t str = Use str
            h (R its) = Block its
