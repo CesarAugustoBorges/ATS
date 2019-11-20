@@ -1,5 +1,6 @@
 import Test.QuickCheck
 import Dados
+import Localidades
 
 ---------- PROP ----------
 data Prop = Prop Nome Nif Email -- Morada

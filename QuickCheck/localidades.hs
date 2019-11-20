@@ -1,3 +1,5 @@
+module Localidades where
+
 import Test.QuickCheck
 
 localidades :: [(Int, Gen String)]
