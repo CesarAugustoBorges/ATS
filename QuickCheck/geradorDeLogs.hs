@@ -3,15 +3,15 @@ import Dados
 import Localidades
 
 ---------- PROP ----------
-data Prop = Prop Nome Nif Email -- Morada
+data Prop = Prop Nome Nif Email Morada
      deriving Show 
 
 genProp :: Gen Prop
 genProp = do nome <- genNome
              nif <- genNif
              email <- genEmail nif
-             --morada <- genMorada
-             return (Prop nome nif email {-morada-})
+             morada <- genMorada
+             return (Prop nome nif email morada)
 
 type Nome = String
 type Nif = Int
@@ -30,20 +30,21 @@ genEmail :: Nif -> Gen Email
 genEmail nif = return (show (nif) ++ "@gmail.com")
 
 genMorada :: Gen Morada
-genMorada = undefined
+genMorada = do fe <- frequency localidades
+               return fe
 
 ---------- Cliente -------
-data Cliente = Cliente Nome Nif Email {-Morada-} X Y
+data Cliente = Cliente Nome Nif Email Morada X Y
                deriving Show
 
 genCliente :: Gen Cliente
 genCliente = do nome <- genNome
                 nif <- genNif
                 email <- genEmail nif
-                -- morada <- genMorada
+                morada <- genMorada
                 x <- genX
                 y <- genY
-                return (Cliente nome nif email {-morada-} x y)
+                return (Cliente nome nif email morada x y)
 
 type X = Float
 type Y = Float
@@ -59,6 +60,7 @@ genY = do y <- choose(-90,90)
 ---------- Carro ---------
 
 data Carro = Carro Tipo Marca Matricula Nif VelocidadeMedia PrecoKM ConsumoKM Autonomia X Y
+            deriving Show
 
 genCarro ::Gen Carro
 genCarro = do tipo <- genTipo
@@ -89,9 +91,8 @@ genTipo = do t <- frequency [(70,return Gasolina),(25,return Hibrido),(5,return 
 
 
 genMarca :: Gen String
-genMarca = undefined
-{-genMarca = do m <- elements marcas
-              return m-}
+genMarca = do m <- elements marcas
+              return m
 
 genMatricula :: Gen Matricula
 genMatricula = do a1 <- elements ['A'..'Z']
@@ -125,6 +126,7 @@ genAutonomia Hibrido = do a <- elements [120..160]
 ----------- Aluguer -------
 
 data Aluguer = Aluguer Nif X Y Tipo Preferencia
+              deriving Show
 
 genAluguer :: Gen Aluguer
 genAluguer = do nif <- genNif
@@ -136,6 +138,7 @@ genAluguer = do nif <- genNif
 
 data Preferencia = MaisPerto
                  | MaisBarato
+                  deriving Show
 
 genPreferencia :: Gen Preferencia
 genPreferencia = do p <- frequency [(65,return MaisBarato),(35,return MaisPerto)]
@@ -144,6 +147,7 @@ genPreferencia = do p <- frequency [(65,return MaisBarato),(35,return MaisPerto)
 ------------ Classificar
 
 data Classificar = Classificar MatriculaOuNif Nota
+                  deriving Show
 
 genClassificar :: Gen Classificar
 genClassificar = do matriculaounif <- genMatriculaOuNif
