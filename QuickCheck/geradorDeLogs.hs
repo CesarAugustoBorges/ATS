@@ -3,15 +3,17 @@ import Dados
 import Localidades
 
 ---------- PROP ----------
-data Prop = Prop Nome Nif Email -- Morada
-     deriving Show 
+data Prop = Prop Nome Nif Email Morada
+
+instance Show (Prop) where
+    show (Prop nome nif email morada) = "NovoProp:"++ nome ++ "," ++ show(nif) ++ "," ++ email ++ "," ++ morada
 
 genProp :: Gen Prop
 genProp = do nome <- genNome
              nif <- genNif
              email <- genEmail nif
-             --morada <- genMorada
-             return (Prop nome nif email {-morada-})
+             morada <- genMorada
+             return (Prop nome nif email morada)
 
 type Nome = String
 type Nif = Int
@@ -30,20 +32,23 @@ genEmail :: Nif -> Gen Email
 genEmail nif = return (show (nif) ++ "@gmail.com")
 
 genMorada :: Gen Morada
-genMorada = undefined
+genMorada = frequency localidades
 
 ---------- Cliente -------
-data Cliente = Cliente Nome Nif Email {-Morada-} X Y
-               deriving Show
+data Cliente = Cliente Nome Nif Email Morada X Y
+
+instance Show (Cliente) where
+    show (Cliente nome nif email morada x y) = "NovoCliente:"++ nome ++ "," ++ show(nif) ++ "," ++ email ++ "," ++ 
+                                               morada ++ "," ++ show(x) ++ "," ++ show(y)
 
 genCliente :: Gen Cliente
 genCliente = do nome <- genNome
                 nif <- genNif
                 email <- genEmail nif
-                -- morada <- genMorada
+                morada <- genMorada
                 x <- genX
                 y <- genY
-                return (Cliente nome nif email {-morada-} x y)
+                return (Cliente nome nif email morada x y)
 
 type X = Float
 type Y = Float
@@ -59,6 +64,7 @@ genY = do y <- choose(-90,90)
 ---------- Carro ---------
 
 data Carro = Carro Tipo Marca Matricula Nif VelocidadeMedia PrecoKM ConsumoKM Autonomia X Y
+       deriving Show
 
 genCarro ::Gen Carro
 genCarro = do tipo <- genTipo
@@ -125,6 +131,7 @@ genAutonomia Hibrido = do a <- elements [120..160]
 ----------- Aluguer -------
 
 data Aluguer = Aluguer Nif X Y Tipo Preferencia
+    deriving Show
 
 genAluguer :: Gen Aluguer
 genAluguer = do nif <- genNif
@@ -136,6 +143,7 @@ genAluguer = do nif <- genNif
 
 data Preferencia = MaisPerto
                  | MaisBarato
+    deriving Show
 
 genPreferencia :: Gen Preferencia
 genPreferencia = do p <- frequency [(65,return MaisBarato),(35,return MaisPerto)]
@@ -144,6 +152,7 @@ genPreferencia = do p <- frequency [(65,return MaisBarato),(35,return MaisPerto)
 ------------ Classificar
 
 data Classificar = Classificar MatriculaOuNif Nota
+    deriving Show
 
 genClassificar :: Gen Classificar
 genClassificar = do matriculaounif <- genMatriculaOuNif
@@ -164,3 +173,16 @@ genNota :: Gen Nota
 genNota = do n <- choose(0,100)
              return n
 
+
+generateMany :: Show a => Int -> Gen a -> IO ()
+generateMany 1 g = do pr <- generate g
+                      print pr
+generateMany n g = do pr <- generate g
+                      print pr
+                      generateMany(n-1) g
+
+main = do generateMany 100 genProp
+          generateMany 100 genCliente
+          generateMany 100 genCarro
+          generateMany 100 genAluguer
+          generateMany 100 genClassificar
