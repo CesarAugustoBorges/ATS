@@ -253,3 +253,6 @@ nomes = [
   "enia Cafe",
   "enia Leon",
   "erica Gira"]
+
+
+marcas = ["Renault","Mercedes","Opel","Porsche","BMW","Honda","Hyundai","Volkswagen"]
