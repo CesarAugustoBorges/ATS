@@ -9,12 +9,22 @@ instance Show (Prop) where
     show (Prop nome nif email morada) = "NovoProp:"++ nome ++ "," ++ show(nif) ++ "," ++ email ++ "," ++ morada
 
 
-genProp :: Gen Prop
-genProp = do nome <- genNome
-             nif <- genNif
+genProp :: Nif -> Gen Prop
+genProp nif = do 
+             nome <- genNome
              email <- genEmail nif
              morada <- genMorada
              return (Prop nome nif email morada)
+
+genProps :: Int -> [Nif] -> Gen [Prop]
+genProps 1 (h:t) = do
+                     prop <- genProp h
+                     return [prop]
+genProps n (h:t) = do
+                      let props = genProps (n-1) t
+                      lista <- props
+                      prop <- genProp h
+                      return ([prop] ++ lista)  
 
 type Nome = String
 type Nif = Int
@@ -28,6 +38,15 @@ genNome = do nome <- elements nomes
 genNif :: Gen Nif
 genNif = do nif <- choose(100000000,999999999)
             return nif
+
+genNifs :: Int -> Gen [Nif]
+genNifs n = genNifsAux n [] 
+
+genNifsAux :: Int -> [Nif] -> Gen [Nif]
+genNifsAux 0 l = return l
+genNifsAux n l = do 
+               nif <- genNif
+               if elem nif l then genNifsAux n l else genNifsAux (n-1) (nif:l)
 
 genEmail :: Nif -> Gen Email
 genEmail nif = return (show (nif) ++ "@gmail.com")
@@ -43,14 +62,23 @@ instance Show (Cliente) where
                                                morada ++ "," ++ show(x) ++ "," ++ show(y)
 
 
-genCliente :: Gen Cliente
-genCliente = do nome <- genNome
-                nif <- genNif
-                email <- genEmail nif
-                morada <- genMorada
-                x <- genX
-                y <- genY
-                return (Cliente nome nif email morada x y)
+genCliente :: Nif -> Gen Cliente
+genCliente nif = do nome <- genNome
+                    email <- genEmail nif
+                    morada <- genMorada
+                    x <- genX
+                    y <- genY
+                    return (Cliente nome nif email morada x y)
+
+genClientes :: Int -> [Nif] -> Gen [Cliente]
+genClientes 1 (h:t) = do 
+                        cliente <- genCliente h
+                        return [cliente]
+genClientes n (h:t) = do 
+                         let clientes = genClientes (n-1) t
+                         lista <- clientes
+                         cliente <- genCliente h
+                         return ([cliente] ++ lista)
 
 type X = Float
 type Y = Float
@@ -73,18 +101,30 @@ instance Show (Carro) where
         show(precoKM) ++ "," ++ show(consumoKM) ++ "," ++ show(autonomia) ++ "," ++ show(x) ++ "," ++ show(y)
 
 
-genCarro ::Gen Carro
-genCarro = do tipo <- genTipo
-              marca <- genMarca
-              matricula <- genMatricula
-              nif <- genNif
-              velocidadeMedia <- genVelocidadeMedia
-              precoKM <- genPrecoKM
-              consumoKM <- genConsumoKM
-              autonomia <- genAutonomia tipo
-              x <- genX
-              y <- genY
-              return (Carro tipo marca matricula nif velocidadeMedia precoKM consumoKM autonomia x y)
+genCarro :: Nif -> Gen Carro
+genCarro nif = do tipo <- genTipo
+                  marca <- genMarca
+                  matricula <- genMatricula
+                  velocidadeMedia <- genVelocidadeMedia
+                  precoKM <- genPrecoKM
+                  consumoKM <- genConsumoKM
+                  autonomia <- genAutonomia tipo
+                  x <- genX
+                  y <- genY
+                  return (Carro tipo marca matricula nif velocidadeMedia precoKM consumoKM autonomia x y)
+
+genCarros :: Int -> [Nif] -> Gen [Carro]
+genCarros 1 l = do 
+                    nif <- elements l
+                    carro <- genCarro nif
+                    return [carro]
+genCarros n l = do 
+                    let carros = genCarros (n-1) l
+                    lista <- carros
+                    nif <- elements l
+                    carro <- genCarro nif
+                    return ([carro] ++ lista)
+
 
 data Tipo = Eletrico | Hibrido | Gasolina
           deriving Show
@@ -187,6 +227,23 @@ genNota :: Gen Nota
 genNota = do n <- choose(0,100)
              return n
 
+generateMany' :: Show a => Int -> Gen a -> Gen [a]
+generateMany' n g = vectorOf n g
+
+generateMany'' :: Show a => Int -> Gen a -> [Gen a]
+generateMany'' 0 g = []
+generateMany'' n g = g: (generateMany'' (n-1) g)
+
+printMany :: Show a => Gen [a] -> IO()
+printMany g = do
+                 list <- generate g
+                 printAll list
+
+printAll :: Show a => [a] -> IO()
+printAll [x] = print x
+printAll (h:t) = do
+                    print h
+                    printAll t 
 
 generateMany :: Show a => Int -> Gen a -> IO ()
 generateMany 1 g = do pr <- generate g
@@ -195,8 +252,17 @@ generateMany n g = do pr <- generate g
                       print pr
                       generateMany(n-1) g
 
-main = do generateMany 100 genProp
-          generateMany 100 genCliente
-          generateMany 100 genCarro
-          generateMany 100 genAluguer
-          generateMany 100 genClassificar
+main = do 
+          nifs <- generate(genNifs 500)
+          props <- generate(genProps 2 nifs)
+          clientes <- generate(genClientes 2 nifs)
+          let nifsUsados = take 2 nifs
+          carros <- generate(genCarros 2 nifsUsados)
+          --printAll nifs
+          printAll props
+          printAll clientes
+          printAll carros
+          --generateMany 100 genCliente
+          --generateMany 100 genCarro
+          --generateMany 100 genAluguer
+          --generateMany 100 genClassificar
