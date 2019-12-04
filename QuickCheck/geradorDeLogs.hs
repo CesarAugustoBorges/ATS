@@ -101,29 +101,21 @@ instance Show (Carro) where
         show(precoKM) ++ "," ++ show(consumoKM) ++ "," ++ show(autonomia) ++ "," ++ show(x) ++ "," ++ show(y)
 
 
-genCarro :: Nif -> Gen Carro
-genCarro nif = do tipo <- genTipo
-                  marca <- genMarca
-                  matricula <- genMatricula
-                  velocidadeMedia <- genVelocidadeMedia
-                  precoKM <- genPrecoKM
-                  consumoKM <- genConsumoKM
-                  autonomia <- genAutonomia tipo
-                  x <- genX
-                  y <- genY
-                  return (Carro tipo marca matricula nif velocidadeMedia precoKM consumoKM autonomia x y)
+genCarro :: [Nif] -> [Matricula] -> Gen Carro
+genCarro nifs mtrs = do tipo <- genTipo
+                        nif <- elements nifs
+                        marca <- genMarca
+                        matricula <- elements mtrs
+                        velocidadeMedia <- genVelocidadeMedia
+                        precoKM <- genPrecoKM
+                        consumoKM <- genConsumoKM
+                        autonomia <- genAutonomia tipo
+                        x <- genX
+                        y <- genY
+                        return (Carro tipo marca matricula nif velocidadeMedia precoKM consumoKM autonomia x y)
 
-genCarros :: Int -> [Nif] -> Gen [Carro]
-genCarros 1 l = do 
-                    nif <- elements l
-                    carro <- genCarro nif
-                    return [carro]
-genCarros n l = do 
-                    let carros = genCarros (n-1) l
-                    lista <- carros
-                    nif <- elements l
-                    carro <- genCarro nif
-                    return ([carro] ++ lista)
+genCarros :: Int -> [Nif] -> [Matricula] -> Gen [Carro]
+genCarros n nifs matrs = vectorOf n (genCarro nifs matrs)
 
 
 data Tipo = Eletrico | Hibrido | Gasolina
@@ -154,6 +146,15 @@ genMatricula = do a1 <- elements ['A'..'Z']
                   n4 <- elements ['0'..'9']
                   return [a1,a2,'-',n1,n2,'-',n3,n4]
 
+genMatriculas :: Int -> Gen [Matricula]
+genMatriculas n = genMatriculasAux n []
+
+genMatriculasAux :: Int -> [Matricula] -> Gen [Matricula]
+genMatriculasAux 0 l = return l
+genMatriculasAux n l = do 
+                        matricula <- genMatricula
+                        if elem matricula l then genMatriculasAux n l else genMatriculasAux (n-1) (matricula:l)
+
 genVelocidadeMedia :: Gen VelocidadeMedia
 genVelocidadeMedia = do vm <- choose(20,200)
                         return vm 
@@ -182,13 +183,17 @@ instance Show (Aluguer) where
     show (Aluguer nif x y tipo preferencia) = 
         "Aluguer:" ++ show(nif) ++ "," ++ show(x) ++ "," ++ show(y) ++ "," ++ show(tipo) ++ "," ++ show(preferencia)
 
-genAluguer :: Gen Aluguer
-genAluguer = do nif <- genNif
-                x <- genX
-                y <- genY
-                tipo <- genTipo
-                pref <- genPreferencia
-                return (Aluguer nif x y tipo pref)
+genAluguer :: [Nif] -> Gen Aluguer
+genAluguer nifs = do nif <- elements nifs
+                     x <- genX
+                     y <- genY
+                     tipo <- genTipo
+                     pref <- genPreferencia
+                     return (Aluguer nif x y tipo pref)
+
+genAlugueres :: Int -> [Nif] -> Gen [Aluguer]
+genAlugueres n nifs = vectorOf n (genAluguer nifs)
+
 
 data Preferencia = MaisPerto
                  | MaisBarato
@@ -203,23 +208,25 @@ genPreferencia = do p <- frequency [(65,return MaisBarato),(35,return MaisPerto)
 
 data Classificar = Classificar MatriculaOuNif Nota
 
-instance Show (Classificar) where
+instance Show Classificar where
     show (Classificar matriculaOuNif nota) = 
-        "Classificar:" ++ show(matriculaOuNif) ++ "," ++ show(nota)
+        "Classificar:" ++ matriculaOuNif ++ "," ++ show(nota)
 
 
-genClassificar :: Gen Classificar
-genClassificar = do matriculaounif <- genMatriculaOuNif
-                    nota <- genNota
-                    return (Classificar matriculaounif nota)
+genClassificar :: [Nif] -> [Matricula] -> Gen Classificar
+genClassificar nifs matriculas = do matriculaounif <- genMatriculaOuNif nifs matriculas
+                                    nota <- genNota
+                                    return (Classificar matriculaounif nota)
 
-data MatriculaOuNif = Matricula
-                    | Nif
-                    deriving Show
+type MatriculaOuNif = String
 
-genMatriculaOuNif :: Gen MatriculaOuNif
-genMatriculaOuNif = do m <- frequency [(50,return Matricula),(50,return Nif)]
-                       return m
+genMatriculaOuNif :: [Nif] -> [Matricula] -> Gen MatriculaOuNif
+genMatriculaOuNif nifs matriculas = do  nif <- elements nifs 
+                                        m <- frequency [(50,elements matriculas),(50, return (show(nif)))]
+                                        return m
+
+genClassificacoes :: Int -> [Nif] -> [Matricula] -> Gen [Classificar]
+genClassificacoes n nifs matriculas = vectorOf n (genClassificar nifs matriculas) 
 
 type Nota = Int
 
@@ -252,17 +259,23 @@ generateMany n g = do pr <- generate g
                       print pr
                       generateMany(n-1) g
 
-main = do 
-          nifs <- generate(genNifs 500)
-          props <- generate(genProps 2 nifs)
-          clientes <- generate(genClientes 2 nifs)
-          let nifsUsados = take 2 nifs
-          carros <- generate(genCarros 2 nifsUsados)
-          --printAll nifs
-          printAll props
-          printAll clientes
-          printAll carros
-          --generateMany 100 genCliente
-          --generateMany 100 genCarro
-          --generateMany 100 genAluguer
-          --generateMany 100 genClassificar
+--NProprietario -> NClientes -> NCarros -> NClassificacoes
+generator :: Int -> Int -> Int -> Int ->Int -> IO()
+generator nProp nCli nCar nAlu nClas = do
+                                        matriculas <- generate(genMatriculas nCar)
+                                        nifs <- generate(genNifs (nProp + nCli))
+                                        props <- generate(genProps nProp nifs)
+                                        clientes <- generate(genClientes nCli nifs)
+                                        let nifsUsados = take nProp nifs
+                                        carros <- generate(genCarros nCar nifsUsados matriculas )
+                                        alugueres <- generate(genAlugueres nAlu nifsUsados)
+                                        classificacoes <- generate(genClassificacoes nClas nifsUsados matriculas)
+                                        printAll props
+                                        printAll clientes
+                                        printAll carros
+                                        printAll alugueres
+                                        printAll classificacoes
+
+
+
+main = generator 100 500 130 1000 600
