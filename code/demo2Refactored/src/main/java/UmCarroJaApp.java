@@ -304,7 +304,7 @@ public class UmCarroJaApp{
         out.print("Digite a sua Data de Nascimento (dd-mm-aaaa): ");
         dataNascimento = Input.lerData("Data de Nascimento Inválida!", "Digite novamente a sua Data de Nascimento (dd-mm-aaaa): ");
             
-        tipoUser = Menu.MenuLerInt(1, 2, "\n******************\n1 - Proprietário\n2 - Cliente.\nEscolha o Tipo de Utilizador: ", 
+        tipoUser = Menu.menuLerInt(1, 2, "\n******************\n1 - Proprietário\n2 - Cliente.\nEscolha o Tipo de Utilizador: ",
                                  "Tipo de Utilizador Inválido!, Tente novamente!");
                                  
         if (tipoUser == 1){
@@ -567,7 +567,7 @@ public class UmCarroJaApp{
         
         posicao = new Coordinate(latitude, longitude);
         
-        tipoVeiculo = Menu.MenuLerInt(1, 3, "\n******************\n1 - Combustível.\n2 - Elétrico.\n3 - Hibrido.\nEscolha o Tipo de Veículo: ", 
+        tipoVeiculo = Menu.menuLerInt(1, 3, "\n******************\n1 - Combustível.\n2 - Elétrico.\n3 - Hibrido.\nEscolha o Tipo de Veículo: ",
                                  "Tipo de Veículo Inválido!, Tente novamente!");
         Veiculo vr;
         if (tipoVeiculo == 1){

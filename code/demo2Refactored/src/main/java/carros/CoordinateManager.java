@@ -34,7 +34,7 @@ public class CoordinateManager{
    */
   public static final double EARTH_DIAMETER = Double.valueOf("12756.274");
 
-  private static final String illegalParametersMsg = "All parameters are required and must be valid";
+  private static final String ILLEGAL_PARAMETER_MSG = "All parameters are required and must be valid";
   
   /**
    *  Método que valida a latitude.
@@ -109,7 +109,7 @@ public class CoordinateManager{
   
     // verifica os parametros
     if(isValidLatitude(latitude) == false || isValidLongitude(longitude) == false || distance <= 0) {
-      throw new IllegalArgumentException(illegalParametersMsg);
+      throw new IllegalArgumentException(ILLEGAL_PARAMETER_MSG);
     }
     
     // converte metros para km
@@ -130,11 +130,8 @@ public class CoordinateManager{
   
     // verifica os parametros
     if(isValidLatitude(latitude) == false || isValidLongitude(longitude) == false || distance <= 0) {
-      throw new IllegalArgumentException(illegalParametersMsg);
+      throw new IllegalArgumentException(ILLEGAL_PARAMETER_MSG);
     }
-    
-    // converte metros para km
-    double kilometers = distance / 1000.0;
     
     // calcula a nova longitude
     double newLng = longitude + (distance / longitudeConstant(latitude));
@@ -151,11 +148,8 @@ public class CoordinateManager{
   
     // verifica os parametros
     if(isValidLatitude(latitude) == false || isValidLongitude(longitude) == false || distance <= 0) {
-      throw new IllegalArgumentException(illegalParametersMsg);
+      throw new IllegalArgumentException(ILLEGAL_PARAMETER_MSG);
     }
-    
-    // converte metros para km
-    double kilometers = distance / 1000.0;
     
     // calcula a nova longitude
     double newLng = longitude - (distance / longitudeConstant(latitude));
@@ -174,11 +168,8 @@ public class CoordinateManager{
   
     // verifica os parametros
     if(isValidLatitude(latitude) == false || isValidLongitude(longitude) == false || distance <= 0) {
-      throw new IllegalArgumentException(illegalParametersMsg);
+      throw new IllegalArgumentException(ILLEGAL_PARAMETER_MSG);
     }
-    
-    // converte metros para km
-    double kilometers = distance / 1000.0;
     
     HashMap<String, Coordinate> boundingBox = new java.util.HashMap<String, Coordinate>();
     

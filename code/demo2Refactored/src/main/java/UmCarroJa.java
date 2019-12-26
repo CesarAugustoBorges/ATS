@@ -28,7 +28,7 @@ import java.io.ObjectOutputStream;
 
 
 public class UmCarroJa implements Serializable {
-    private static String NoAvailableVehiclesMesg = "Nao existem veículos disponíveis para alugar.";
+    private static String noAvailableVehiclesMsg = "Nao existem veículos disponíveis para alugar.";
 
     
     /** Variáveis de Instância */
@@ -838,7 +838,7 @@ public class UmCarroJa implements Serializable {
             }
         }
         if(veiculosOrdenados.size() == 0){
-            throw new NaoExistemVeiculosDisponiveisException(NoAvailableVehiclesMesg);
+            throw new NaoExistemVeiculosDisponiveisException(noAvailableVehiclesMsg);
         }
         /*veiculosOrdenados.sort(new Comparator<Veiculo>(){
             public int compare(Veiculo a1, Veiculo a2) {
@@ -872,7 +872,7 @@ public class UmCarroJa implements Serializable {
             }
         }
         if(veiculosOrdenados.size() == 0){
-            throw new NaoExistemVeiculosDisponiveisException(NoAvailableVehiclesMesg);
+            throw new NaoExistemVeiculosDisponiveisException(noAvailableVehiclesMsg);
         }
         return veiculosOrdenados.get(0).clone();
     }

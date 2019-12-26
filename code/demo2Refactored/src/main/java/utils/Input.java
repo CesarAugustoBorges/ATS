@@ -8,10 +8,10 @@ package utils; /**
  *
  * Utilizável em BlueJ, NetBeans, CodeBlocks ou Eclipse.
  * 
- * Utilização típica:  int x = Input.lerInt();
- *                     String nome = Input.lerString();
- * 
- * 
+ * Utilização típica:  int x = scanner.lerInt();
+ *                     String nome = scanner.lerString();
+ *
+ *
  * @version 1.0 (6/2006)
  */
 
@@ -31,117 +31,117 @@ public class Input {
   * Métodos de Classe
   */
 
- private static Scanner input = new Scanner(in);
-    
+ private static Scanner scanner = new Scanner(in);
+
  public static String lerString(String invalido, String novo) {
-     boolean ok = false; 
+     boolean ok = false;
      String txt = "";
      while(!ok) {
          try {
-             txt = input.nextLine();
+             txt = scanner.nextLine();
              ok = true;
          }
-         catch(InputMismatchException e) 
-             { out.println(invalido); 
+         catch(InputMismatchException e)
+             { out.println(invalido);
                out.print(novo);
-               input.nextLine(); 
+               scanner.nextLine();
              }
      }
-     //input.close();
+     //scanner.close();
      return txt;
-  } 
+  }
 
- 
+
  public static int lerInt(String invalido, String novo) {
-     boolean ok = false; 
-     int i = 0; 
+     boolean ok = false;
+     int i = 0;
      while(!ok) {
          try {
-             i = input.nextInt();
+             i = scanner.nextInt();
              ok = true;
          }
-         catch(InputMismatchException e) 
-             { out.println(invalido); 
+         catch(InputMismatchException e)
+             { out.println(invalido);
                out.print(novo);
-               input.nextLine(); 
+               scanner.nextLine();
              }
      }
-     //input.close();
+     //scanner.close();
      return i;
-  } 
-  
+  }
+
   public static double lerDouble(String invalido, String novo) {
-     boolean ok = false; 
-     double d = 0.0; 
+     boolean ok = false;
+     double d = 0.0;
      while(!ok) {
          try {
-             d = input.nextDouble();
+             d = scanner.nextDouble();
              ok = true;
          }
-         catch(InputMismatchException e) 
-             { out.println(invalido); 
+         catch(InputMismatchException e)
+             { out.println(invalido);
                out.print(novo);
-               input.nextLine(); 
+               scanner.nextLine();
              }
      }
-     //input.close();
+     //scanner.close();
      return d;
-  }  
-  
+  }
+
    public static float lerFloat(String invalido, String novo) {
-     boolean ok = false; 
-     float f = 0.0f; 
+     boolean ok = false;
+     float f = 0.0f;
      while(!ok) {
          try {
-             f = input.nextFloat();
+             f = scanner.nextFloat();
              ok = true;
          }
-         catch(InputMismatchException e) 
-             { out.println(invalido); 
+         catch(InputMismatchException e)
+             { out.println(invalido);
                out.print(novo);
-               input.nextLine(); 
+               scanner.nextLine();
              }
      }
-     //input.close();
+     //scanner.close();
      return f;
-  }  
-  
+  }
+
    public static boolean lerBoolean(String invalido, String novo) {
-     boolean ok = false; 
-     boolean b = false; 
+     boolean ok = false;
+     boolean b = false;
      while(!ok) {
          try {
-             b = input.nextBoolean();
+             b = scanner.nextBoolean();
              ok = true;
          }
-         catch(InputMismatchException e) 
-             { out.println(invalido); 
+         catch(InputMismatchException e)
+             { out.println(invalido);
                out.print(novo);
-               input.nextLine(); 
+               scanner.nextLine();
              }
      }
-     //input.close();
+     //scanner.close();
      return b;
-  } 
-  
+  }
+
   public static short lerShort(String invalido, String novo) {
-     boolean ok = false; 
-     short s = 0; 
+     boolean ok = false;
+     short s = 0;
      while(!ok) {
          try {
-             s = input.nextShort();
+             s = scanner.nextShort();
              ok = true;
          }
-         catch(InputMismatchException e) 
-             { out.println(invalido); 
+         catch(InputMismatchException e)
+             { out.println(invalido);
                out.print(novo);
-               input.nextLine(); 
+               scanner.nextLine();
              }
      }
-     //input.close();
+     //scanner.close();
      return s;
   }
-  
+
        public static GregorianCalendar lerData(String errorMessage, String message) {
          boolean ok = false;
          GregorianCalendar date = null;
@@ -151,7 +151,7 @@ public class Input {
          int d = 0;
          int m = 0;
          int y = 0;
-         
+
          /* enquanto não for inserida uma data válida */
          while (!ok) {
              /* Lê-se a data */

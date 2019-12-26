@@ -77,7 +77,7 @@ public class Menu{
      * @param txt  String para mostrar ao utilizador a pedir um novo Int.
      * @param erro String que contém o erro a imprimir para o stdout.
      */
-    public static int MenuLerInt(int min, int max, String txt, String erro) {
+    public static int menuLerInt(int min, int max, String txt, String erro) {
         int valor = 0;
         
         do{
