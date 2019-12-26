@@ -67,6 +67,15 @@ token' t = f <$> token t <*> spaces
 succeed :: r -> Parser s r
 succeed r inp = [ ( r , inp) ]
 
+optional' :: Parser s r -> Parser s [r]
+optional' p = f <$> p
+          <|> succeed []
+      where f a = [a]
+
+optional :: Eq r => Parser s r -> r -> Parser s r
+optional p r = p
+            <|> succeed r
+
 (<|>) :: Parser s a -> Parser s a -> Parser s a
 (p <|> q) inp = p inp ++ q inp
 
