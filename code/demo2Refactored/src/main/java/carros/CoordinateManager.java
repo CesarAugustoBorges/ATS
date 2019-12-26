@@ -33,6 +33,8 @@ public class CoordinateManager{
    * Constante para o diâmentro da Terra.
    */
   public static final double EARTH_DIAMETER = Double.valueOf("12756.274");
+
+  private static final String illegalParametersMsg = "All parameters are required and must be valid";
   
   /**
    *  Método que valida a latitude.
@@ -107,7 +109,7 @@ public class CoordinateManager{
   
     // verifica os parametros
     if(isValidLatitude(latitude) == false || isValidLongitude(longitude) == false || distance <= 0) {
-      throw new IllegalArgumentException("All parameters are required and must be valid");
+      throw new IllegalArgumentException(illegalParametersMsg);
     }
     
     // converte metros para km
@@ -128,7 +130,7 @@ public class CoordinateManager{
   
     // verifica os parametros
     if(isValidLatitude(latitude) == false || isValidLongitude(longitude) == false || distance <= 0) {
-      throw new IllegalArgumentException("All parameters are required and must be valid");
+      throw new IllegalArgumentException(illegalParametersMsg);
     }
     
     // converte metros para km
@@ -149,7 +151,7 @@ public class CoordinateManager{
   
     // verifica os parametros
     if(isValidLatitude(latitude) == false || isValidLongitude(longitude) == false || distance <= 0) {
-      throw new IllegalArgumentException("All parameters are required and must be valid");
+      throw new IllegalArgumentException(illegalParametersMsg);
     }
     
     // converte metros para km
@@ -172,7 +174,7 @@ public class CoordinateManager{
   
     // verifica os parametros
     if(isValidLatitude(latitude) == false || isValidLongitude(longitude) == false || distance <= 0) {
-      throw new IllegalArgumentException("All parameters are required and must be valid");
+      throw new IllegalArgumentException(illegalParametersMsg);
     }
     
     // converte metros para km

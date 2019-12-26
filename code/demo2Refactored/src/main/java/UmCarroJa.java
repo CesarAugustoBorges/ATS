@@ -28,6 +28,8 @@ import java.io.ObjectOutputStream;
 
 
 public class UmCarroJa implements Serializable {
+    private static String NoAvailableVehiclesMesg = "Nao existem veículos disponíveis para alugar.";
+
     
     /** Variáveis de Instância */
     
@@ -509,10 +511,9 @@ public class UmCarroJa implements Serializable {
         for (Map<String, List<Aluguer>> mAlugs : this.alugueres.values()){
             for (List<Aluguer> lAlugs : mAlugs.values()){
                 for (Aluguer alug : lAlugs){
-                    if (alug.getEmail().equals(getEmailUser()) && alug.getRealizado()){
-                        if (alug.getEstadoClassificacao() == 0 || alug.getEstadoClassificacao() == 1){
+                    if (alug.getEmail().equals(getEmailUser()) && alug.getRealizado() &&
+                            (alug.getEstadoClassificacao() == 0 || alug.getEstadoClassificacao() == 1)){
                             alugsClassif.add(alug);
-                        }
                     }
                 }
             }
@@ -837,7 +838,7 @@ public class UmCarroJa implements Serializable {
             }
         }
         if(veiculosOrdenados.size() == 0){
-            throw new NaoExistemVeiculosDisponiveisException("Nao existem veículos disponíveis para alugar.");
+            throw new NaoExistemVeiculosDisponiveisException(NoAvailableVehiclesMesg);
         }
         /*veiculosOrdenados.sort(new Comparator<Veiculo>(){
             public int compare(Veiculo a1, Veiculo a2) {
@@ -871,7 +872,7 @@ public class UmCarroJa implements Serializable {
             }
         }
         if(veiculosOrdenados.size() == 0){
-            throw new NaoExistemVeiculosDisponiveisException("Não Existem Veículos Disponíveis para Alugar.");
+            throw new NaoExistemVeiculosDisponiveisException(NoAvailableVehiclesMesg);
         }
         return veiculosOrdenados.get(0).clone();
     }

@@ -186,6 +186,7 @@ public class UmCarroJaApp{
                         break;
                 case 3: guardarDados();
                         break;
+                default: break;
             }
         }while(menuInicial.getOpcao() != 0);
         guardarDados();
@@ -210,7 +211,8 @@ public class UmCarroJaApp{
                     }
                     break;
                 case 2: registarUtilizador();
-                        break;                        
+                        break;
+                default: break;
             }
         }while(menuUtilizador.getOpcao() != 0);
     }

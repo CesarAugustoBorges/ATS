@@ -79,8 +79,8 @@ public class ParseDados{
             case "Gasolina":
                 Veiculo cg = parseCarroGasolina(linha);
                 return cg.clone();
+            default: return new Veiculo();
         }
-        return new Veiculo();
     }
 
     private static CarroEletrico parseCarroEletrico(String linha){
