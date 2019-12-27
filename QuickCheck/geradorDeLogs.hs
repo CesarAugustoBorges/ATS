@@ -101,21 +101,24 @@ instance Show (Carro) where
         show(precoKM) ++ "," ++ show(consumoKM) ++ "," ++ show(autonomia) ++ "," ++ show(x) ++ "," ++ show(y)
 
 
-genCarro :: [Nif] -> [Matricula] -> Gen Carro
-genCarro nifs mtrs = do tipo <- genTipo
-                        nif <- elements nifs
-                        marca <- genMarca
-                        matricula <- elements mtrs
-                        velocidadeMedia <- genVelocidadeMedia
-                        precoKM <- genPrecoKM
-                        consumoKM <- genConsumoKM
-                        autonomia <- genAutonomia tipo
-                        x <- genX
-                        y <- genY
-                        return (Carro tipo marca matricula nif velocidadeMedia precoKM consumoKM autonomia x y)
+genCarro :: [Nif] -> Matricula -> Gen Carro
+genCarro nifs matricula = do tipo <- genTipo
+                             nif <- elements nifs
+                             marca <- genMarca
+                             velocidadeMedia <- genVelocidadeMedia
+                             precoKM <- genPrecoKM
+                             consumoKM <- genConsumoKM
+                             autonomia <- genAutonomia tipo
+                             x <- genX
+                             y <- genY
+                             return (Carro tipo marca matricula nif velocidadeMedia precoKM consumoKM autonomia x y)
 
 genCarros :: Int -> [Nif] -> [Matricula] -> Gen [Carro]
-genCarros n nifs matrs = vectorOf n (genCarro nifs matrs)
+genCarros 0 _ _ = return []
+genCarros n nifs (hm:tm) = do carro <- genCarro nifs hm
+                              carros <- genCarros (n-1) nifs tm
+                              return ([carro] ++ carros)
+
 
 
 data Tipo = Eletrico | Hibrido | Gasolina
@@ -264,12 +267,13 @@ generator :: Int -> Int -> Int -> Int ->Int -> IO()
 generator nProp nCli nCar nAlu nClas = do
                                         matriculas <- generate(genMatriculas nCar)
                                         nifs <- generate(genNifs (nProp + nCli))
-                                        props <- generate(genProps nProp nifs)
-                                        clientes <- generate(genClientes nCli nifs)
-                                        let nifsUsados = take nProp nifs
-                                        carros <- generate(genCarros nCar nifsUsados matriculas )
-                                        alugueres <- generate(genAlugueres nAlu nifsUsados)
-                                        classificacoes <- generate(genClassificacoes nClas nifsUsados matriculas)
+                                        let nifsClients = drop nProp nifs
+                                        let nifsProps = take nProp nifs
+                                        props <- generate(genProps nProp nifsProps)
+                                        clientes <- generate(genClientes nCli nifsClients)
+                                        carros <- generate(genCarros nCar nifsProps matriculas )
+                                        alugueres <- generate(genAlugueres nAlu nifsClients)
+                                        classificacoes <- generate(genClassificacoes nClas nifsProps matriculas)
                                         printAll props
                                         printAll clientes
                                         printAll carros
