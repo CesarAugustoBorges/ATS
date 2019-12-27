@@ -36,8 +36,6 @@ import java.util.Comparator;
 import java.io.IOException;
 import java.util.InputMismatchException;
 
-import java.lang.String;
-
 public class UmCarroJaApp{
     
     /** Variáveis de Classe */
@@ -61,6 +59,9 @@ public class UmCarroJaApp{
     
     /* Data de início da aplicação */
     private static GregorianCalendar dataInicioApp;
+
+    private static final String NO_RENTAL = "Não existem alugures entre essas datas.";
+    private static final String SEPARATOR = "---------------------------------------------------";
 
     
     /** O construtor é privado, pois não queremos instâncias da mesma. */
@@ -400,8 +401,8 @@ public class UmCarroJaApp{
         } catch(VeiculoNaoExisteException e) {
             out.println("Veiculo " + e.getMessage() + " não existe.");
         }
-        if(alugs.size() == 0) {
-            out.print("Não existem alugures entre essas datas.");
+        if(alugs.isEmpty()) {
+            out.print(NO_RENTAL);
         } else {
             for(Aluguer a : alugs){
                 out.println("------------------------------------------------\n");
@@ -476,6 +477,7 @@ public class UmCarroJaApp{
                         break;
                 case 8: calcFactBDates();
                         break;
+                default: break;
             }
         }while(menuProprietario.getOpcao() != 0);
         UmCarroJaApp.guardarDados();
@@ -484,10 +486,11 @@ public class UmCarroJaApp{
     }
 
     private static void classificarClientes(){
-        List<Aluguer> classif = new ArrayList<>();
+        List<Aluguer> classif;
         try{
             classif = ucj.alugueresClassificarCliente();
         }catch (NaoExistemAlugueresException e){
+            classif = new ArrayList<>();
         }
 
         boolean correto = false;
@@ -499,7 +502,7 @@ public class UmCarroJaApp{
             out.println("Email do Cliente: " + alug.getEmail());
             out.println("Data de Início do Aluguer: " + alug.getDataFim());
             out.println("Data de Fim do Aluguer: " + alug.getDataFim());
-            out.println("---------------------------------------------------");
+            out.println(SEPARATOR);
             do {
                 out.print("Digite uma classificação para o cliente com o email: " + alug.getEmail() + " (0-100): ");
                 classificacao = Input.lerInt("Classificação Inválida!", "Digite novamente a classificação (0-100): ");
@@ -831,7 +834,7 @@ public class UmCarroJaApp{
 
         UmCarroJaApp.clearScreen();
         if(alugs.size() == 0) {
-            out.print("Não existem alugures entre essas datas.");
+            out.print(NO_RENTAL);
         } else {
             for(Aluguer a : res){
                 out.println("------------------------------------------------\n");
@@ -891,7 +894,7 @@ public class UmCarroJaApp{
             out.println("Matrícula: " + alug.getMatricula());
             out.println("Data de Início do Aluguer: " + alug.getDataFim());
             out.println("Data de Fim do Aluguer: " + alug.getDataFim());
-            out.println("---------------------------------------------------");
+            out.println(SEPARATOR);
             do {
                 out.print("Digite uma classificação para o veículo com a matrícula: " + alug.getMatricula() + " (0-100): ");
                 classificacao = Input.lerInt("Classificação Inválida!", "Digite novamente a classificação (0-100): ");
@@ -1220,7 +1223,7 @@ public class UmCarroJaApp{
 
         UmCarroJaApp.clearScreen();
         if (res.size() == 0) {
-            out.print("Não existem alugures entre essas datas.");
+            out.print(NO_RENTAL);
         } else {
             for (Aluguer a : res) {
                 out.println("------------------------------------------------\n");
@@ -1355,21 +1358,21 @@ public class UmCarroJaApp{
         }else{
             if (dados[3].equals("Electrico")){
                 try{
-                    v = ucj.maisPertoJa(cli.getPosicao().clone(), cords.clone(), datas, "CarroEletrico");
+                    v = ucj.maisPertoJa(cords.clone(), datas, "CarroEletrico");
                 }catch(NaoExistemVeiculosDisponiveisException e){
                     out.println("Não existem veículos disponíveis para alugar!\n");
                 }
             }
             if (dados[3].equals("Hibrido")){
                 try{
-                    v = ucj.maisPertoJa(cli.getPosicao().clone(), cords.clone(), datas, "CarroHibrido");
+                    v = ucj.maisPertoJa(cords.clone(), datas, "CarroHibrido");
                 }catch(NaoExistemVeiculosDisponiveisException e){
                     out.println("Não existem veículos disponíveis para alugar!\n");
                 }
             }
             if (dados[3].equals("Gasolina")){
                 try{
-                    v = ucj.maisPertoJa(cli.getPosicao().clone(), cords.clone(), datas, "CarroGasolina");
+                    v = ucj.maisPertoJa(cords.clone(), datas, "CarroGasolina");
                 }catch(NaoExistemVeiculosDisponiveisException e){
                     out.println("Não existem veículos disponíveis para alugar!\n");
                 }

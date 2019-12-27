@@ -21,7 +21,6 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -684,7 +683,7 @@ public class UmCarroJa implements Serializable {
         for (Veiculo v : disponiveisAlugar(destino, date)){
             veic.add(v.clone());
         }
-        if(veic.size() == 0){
+        if(veic.isEmpty()){
             throw new NaoExistemVeiculosDisponiveisException("Nao existem veiculos disponiveis para alugar. 1");
         }
         veic.sort(new ComparadorPreco());
@@ -716,7 +715,7 @@ public class UmCarroJa implements Serializable {
                 veiculosBaratosNoP.add(v.clone());
             }
         }
-        if(veiculosBaratosNoP.size() == 0){
+        if(veiculosBaratosNoP.isEmpty()){
             throw new NaoExistemVeiculosDisponiveisException("Não Existem Veículos Disponíveis para Alugar.");
         }
         return veiculosBaratosNoP.stream().limit(quantos).collect(Collectors.toList());
@@ -743,7 +742,7 @@ public class UmCarroJa implements Serializable {
         List<ParDatas> datasDeUmVeiculo = this.veiculos.get(id).getDatasAlugueres();
 
         if(this.veiculos.get(id).getDisponibilidade() && autonomiaSuf(this.veiculos.get(id), destino) &&
-                datasDeUmVeiculo.stream().filter(d->d.isAvailable(date) == false).count() == 0){
+                datasDeUmVeiculo.stream().filter(d->!d.isAvailable(date)).count() == 0){
             return this.veiculos.get(id).clone();
         }else {
             throw new VeiculoIndisponivelException(id);
@@ -770,7 +769,7 @@ public class UmCarroJa implements Serializable {
                 veiculosAuto.add(v.clone());
             }
         }
-        if(veiculosAuto.size() == 0){
+        if(veiculosAuto.isEmpty()){
             throw new NaoExistemVeiculosDisponiveisException("Não Existem Veículos Disponíveis para Alugar.");
         }
         veiculosAuto.sort(new ComparadorAutonomia());
@@ -797,7 +796,7 @@ public class UmCarroJa implements Serializable {
                }
            }
        }
-       if(lista.size() == 0){
+       if(lista.isEmpty()){
            throw new NaoEfetuouNenhumAluguerException("Não efetuou nenhum aluguer.");
        }
        return lista;
@@ -817,13 +816,11 @@ public class UmCarroJa implements Serializable {
      * Método responsável por devolver o veículo mais próximo do cliente, q
      * ue esteja disponível para aluguar mediante uma data recebida como
      * parâmetro e mediante o destino.
-     *
-     * @param posCli   Posição do cliente.
-     * @param destino  Destino do cliente.
+     *  @param destino  Destino do cliente.
      * @param date     Intervalo de datas em que o cliente pretende o aluguer.
      * @param combustivel Tipo de combustível.
      */
-    public Veiculo maisPertoJa(Coordinate posCli, Coordinate destino, ParDatas date, String combustivel) throws NaoExistemVeiculosDisponiveisException{
+    public Veiculo maisPertoJa(Coordinate destino, ParDatas date, String combustivel) throws NaoExistemVeiculosDisponiveisException{
         List<Veiculo> veiculosOrdenados = new ArrayList<>();
 
         for (Veiculo v : disponiveisAlugar(destino, date)){
@@ -831,20 +828,9 @@ public class UmCarroJa implements Serializable {
                 veiculosOrdenados.add(v.clone());
             }
         }
-        if(veiculosOrdenados.size() == 0){
+        if(veiculosOrdenados.isEmpty()){
             throw new NaoExistemVeiculosDisponiveisException(noAvailableVehiclesMsg);
         }
-        /*veiculosOrdenados.sort(new Comparator<Veiculo>(){
-            public int compare(Veiculo a1, Veiculo a2) {
-                if (a1.getPosicao().getDistancia(posCli) < a2.getPosicao().getDistancia(posCli)) {
-                    return 1;
-                }
-                if (a1.getPosicao().getDistancia(posCli) > a2.getPosicao().getDistancia(posCli)){
-                    return -1;
-                }
-                return 0;
-            };
-        });*/
         return veiculosOrdenados.get(0).clone();
     }
 
@@ -865,7 +851,7 @@ public class UmCarroJa implements Serializable {
                 veiculosOrdenados.add(v);
             }
         }
-        if(veiculosOrdenados.size() == 0){
+        if(veiculosOrdenados.isEmpty()){
             throw new NaoExistemVeiculosDisponiveisException(noAvailableVehiclesMsg);
         }
         return veiculosOrdenados.get(0).clone();
@@ -934,9 +920,7 @@ public class UmCarroJa implements Serializable {
         int conta = 0;
         for (Map<String, List<Aluguer>> a : this.alugueres.values()){
             for (List<Aluguer> l : a.values()){
-                for (Aluguer alug : l){
-                    conta++;
-                }
+                conta += l.size();
             }
         }
         return conta;
@@ -980,7 +964,7 @@ public class UmCarroJa implements Serializable {
     /**
      * Grava os campos da instância UmCarroJa e a data da aplicação num ficheiro objeto.
      */
-    public void guardarEstado(String file, GregorianCalendar date) throws FileNotFoundException, IOException{
+    public void guardarEstado(String file, GregorianCalendar date) throws IOException{
         FileOutputStream fos = new FileOutputStream(file);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         try{
