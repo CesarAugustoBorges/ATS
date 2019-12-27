@@ -121,8 +121,13 @@ genCarros n nifs (hm:tm) = do carro <- genCarro nifs hm
 
 
 
-data Tipo = Eletrico | Hibrido | Gasolina
-          deriving Show
+                            
+data Tipo = Electrico | Hibrido | Gasolina
+
+instance Show (Tipo) where
+    show Electrico = "Electrico"
+    show Hibrido = "Hibrido"
+    show Gasolina = "Gasolina"
 
 type Marca = String
 type Matricula = String
@@ -132,7 +137,7 @@ type ConsumoKM = Float
 type Autonomia = Int
 
 genTipo :: Gen Tipo
-genTipo = do t <- frequency [(70,return Gasolina),(25,return Hibrido),(5,return Eletrico)]
+genTipo = do t <- frequency [(70,return Gasolina),(25,return Hibrido),(5,return Electrico)]
              return t
 
 
@@ -173,8 +178,8 @@ genConsumoKM = do k <- choose (0.1,2.0)
 genAutonomia :: Tipo -> Gen Autonomia
 genAutonomia Gasolina = do a <- elements [70..100]
                            return a
-genAutonomia Eletrico = do a <- elements [100..130] 
-                           return a
+genAutonomia Electrico = do a <- elements [100..130] 
+                            return a
 genAutonomia Hibrido = do a <- elements [120..160]
                           return a
 
@@ -263,6 +268,8 @@ generateMany n g = do pr <- generate g
                       generateMany(n-1) g
 
 --NProprietario -> NClientes -> NCarros -> NClassificacoes
+-- Numero de alugures tem de ser menor que o numero de carros, visto que, assume-se que o aluguer é instantaneo,
+--     deste modo, garante-se que cada cliente consiga encontrar um carro
 generator :: Int -> Int -> Int -> Int ->Int -> IO()
 generator nProp nCli nCar nAlu nClas = do
                                         matriculas <- generate(genMatriculas nCar)
@@ -280,6 +287,4 @@ generator nProp nCli nCar nAlu nClas = do
                                         printAll alugueres
                                         printAll classificacoes
 
-
-
-main = generator 100 500 130 1000 600
+main = generator 100 500 130 30 600

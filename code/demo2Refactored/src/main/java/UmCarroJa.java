@@ -198,7 +198,7 @@ public class UmCarroJa implements Serializable {
                 cli.add(c.clone());
             }
         }
-        if(cli.size() == 0){
+        if(cli.isEmpty()){
             throw new NaoExistemClientesException("Não existem clientes a apresentar.");
         }
         cli.sort(new ComparadorKm());
@@ -218,7 +218,7 @@ public class UmCarroJa implements Serializable {
                 cli.add(c.clone());
             }
         }
-        if(cli.size() == 0){
+        if(cli.isEmpty()){
             throw new NaoExistemClientesException("Não existem clientes a apresentar.");
         }
         cli.sort(new ComparadorNAluguer());
@@ -265,10 +265,8 @@ public class UmCarroJa implements Serializable {
 
          for (List<Aluguer> lAlugs : alugsProp.values()){
              for (Aluguer alug : lAlugs){
-                 if (alug.getRealizado()){
-                     if (alug.getEstadoClassificacao() == 0 || alug.getEstadoClassificacao() == 2){
-                             alugsClassif.add(alug);
-                     }
+                 if (alug.getRealizado() && (alug.getEstadoClassificacao() == 0 || alug.getEstadoClassificacao() == 2)){
+                     alugsClassif.add(alug);
                  }
              }
          }
@@ -399,7 +397,7 @@ public class UmCarroJa implements Serializable {
      */
     public List<Aluguer> determinarListaEspera(String chave){
         List<Aluguer> alugs = getAlugueresProp(chave);
-        alugs.stream().filter(alug -> alug.getListaEspera() == true).collect(Collectors.toList());
+        alugs.stream().filter(Aluguer::getListaEspera).collect(Collectors.toList());
         return alugs;
     }
     
@@ -443,7 +441,7 @@ public class UmCarroJa implements Serializable {
             throw new VeiculoNaoESeuException(matricula);
         }
         List<Aluguer> alugs = this.alugueres.get(user.getNIF()).get(matricula).stream().map(Aluguer :: clone).collect(Collectors.toList());
-        alugs.stream().filter(alug -> alug.getAlteraPreco() == false && alug.getEmail().equals(mail)).collect(Collectors.toList());
+        alugs.stream().filter(alug -> !alug.getAlteraPreco() && alug.getEmail().equals(mail)).collect(Collectors.toList());
         return alugs;
     }
     
@@ -480,7 +478,7 @@ public class UmCarroJa implements Serializable {
             throw new VeiculoNaoESeuException(matricula);
         }
         for(Aluguer a: this.alugueres.get(user.getNIF()).get(matricula)){
-            if(a.getDataInicio().after(inicio) && a.getDataFim().before(fim) && a.getAceite() == true){
+            if(a.getDataInicio().after(inicio) && a.getDataFim().before(fim) && a.getAceite()){
                 total += a.getCustoViagem();
             }
         }
@@ -560,12 +558,12 @@ public class UmCarroJa implements Serializable {
      */
     public void registaAluguer(Aluguer alug){
         String matricula = alug.getMatricula();
-        String NIFprop = this.veiculos.get(matricula).getNIF();
+        String nifProp = this.veiculos.get(matricula).getNIF();
 
-        Map<String, List<Aluguer>> alugs = this.alugueres.get(NIFprop);
+        Map<String, List<Aluguer>> alugs = this.alugueres.get(nifProp);
         try{
             if (alugs.get(matricula) == null){
-                List<Aluguer> alugsPropVeiculo = new ArrayList<Aluguer>();
+                List<Aluguer> alugsPropVeiculo = new ArrayList<>();
                 alugsPropVeiculo.add(alug.clone());
                 alugs.put(matricula, alugsPropVeiculo);
             }else{
@@ -575,12 +573,12 @@ public class UmCarroJa implements Serializable {
             }
         }
         catch (NullPointerException exc){
-            alugs = new HashMap<String, List<Aluguer>>();
-            List<Aluguer> alugsPropVeiculo = new ArrayList<Aluguer>();
+            alugs = new HashMap<>();
+            List<Aluguer> alugsPropVeiculo = new ArrayList<>();
             alugsPropVeiculo.add(alug.clone());
             alugs.put(matricula, alugsPropVeiculo);
         }
-        this.alugueres.put(NIFprop, alugs);
+        this.alugueres.put(nifProp, alugs);
     }
 
     /**
@@ -622,7 +620,7 @@ public class UmCarroJa implements Serializable {
      */
     private List<Veiculo> disponiveisAlugar(Coordinate destino, ParDatas date){
         return this.veiculos.values().stream().filter(v -> v.getDisponibilidade() &&
-                v.getDatasAlugueres().stream().filter(d -> d.isAvailable(date) == false).count() == 0
+                v.getDatasAlugueres().stream().filter(d -> d.isAvailable(date)).count() == 0
                 && autonomiaSuf(v,destino)).map(Veiculo :: clone).collect(Collectors.toList());
     }
 
@@ -635,10 +633,7 @@ public class UmCarroJa implements Serializable {
      * @return boolean True caso tenha autonomia, False caso contrário.
      */
     private boolean autonomiaSuf(Veiculo v, Coordinate destino){
-        if(v.getAutonomia() >= v.getPosicao().getDistancia(destino)){
-            return true;
-        }
-        return false;
+        return v.getAutonomia() >= v.getPosicao().getDistancia(destino);
     }
     
     /**
@@ -657,18 +652,17 @@ public class UmCarroJa implements Serializable {
         for (Veiculo v : disponiveisAlugar(destino, date)){
             veiculosOrdenados.add(v.clone());
         }
-        if(veiculosOrdenados.size() == 0){
+        if(veiculosOrdenados.isEmpty()){
             throw new NaoExistemVeiculosDisponiveisException("Nao existem veiculos disponiveis para alugar. 1");
         }
         Coordinate posCli = getPosicaoCliente();
-        veiculosOrdenados.sort(new Comparator<Veiculo>(){
-                                   public int compare(Veiculo a1, Veiculo a2) {
-                                       if (a1.getPosicao().getDistancia(posCli) < a2.getPosicao().getDistancia(posCli)) {
-                                           return 1;
-                                       }
-                                       return -1;
-                                   };
-                                 });
+        veiculosOrdenados.sort((a1, a2) -> {
+               if (a1.getPosicao().getDistancia(posCli) < a2.getPosicao().getDistancia(posCli)) {
+                   return 1;
+               }
+               return -1;
+            }
+        );
         return veiculosOrdenados.stream().limit(quantos).collect(Collectors.toList());
     }
     
