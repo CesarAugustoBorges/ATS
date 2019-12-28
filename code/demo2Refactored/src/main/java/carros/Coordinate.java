@@ -9,6 +9,7 @@ package carros; /**
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 public class Coordinate implements Comparable<Coordinate>, Serializable {
     
@@ -100,16 +101,20 @@ public class Coordinate implements Comparable<Coordinate>, Serializable {
   
     return format.format(latitude);
   }
-  
-  public String getLongitudeAsString() {
+
+    public String getLongitudeAsString() {
     return format.format(longitude);
   }
   
   public String toString() {
     return format.format(latitude) + ", " + format.format(longitude);
   }
-  
-  
+
+  @Override
+  public int hashCode() {
+      return Objects.hash(latitude, longitude, format);
+  }
+
   public boolean equals(Object o) {
       // check to make sure the object is an event
       if ((o instanceof Coordinate) == false) {

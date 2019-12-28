@@ -253,12 +253,23 @@ public class Aluguer implements Serializable {
     /*****************************************************************************
      *                              END SETTERS                                  *
      *****************************************************************************/
-        
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((mail == null) ? 0 : mail.hashCode())
+                + ((dataInicio == null) ? 0 : dataInicio.hashCode());
+        return result;
+    }
+
     /**
      * Compara a igualdade com outro objeto.
      * @param obj O objeto a comparar.
      * @return true se forem iguais, false caso contrário.
      */
+
     @Override
     public boolean equals(Object obj) {
         if(obj==this) return true;

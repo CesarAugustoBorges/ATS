@@ -95,6 +95,15 @@ public class ParDatas implements Serializable {
             return true;
         }
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((dataInicio == null) ? 0 : dataInicio.hashCode());
+        return result;
+    }
     
     /**
      * Compara a igualdade com outro objeto.

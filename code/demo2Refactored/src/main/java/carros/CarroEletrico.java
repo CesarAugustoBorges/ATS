@@ -44,7 +44,9 @@ public class CarroEletrico extends Veiculo {
     public CarroEletrico(CarroEletrico ce){
         super(ce);       
     }
-        
+
+
+
     /**
      * Compara a igualdade com outro objeto.
      * @param obj O objeto a comparar.

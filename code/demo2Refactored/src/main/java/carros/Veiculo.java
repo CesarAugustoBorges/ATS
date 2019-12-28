@@ -336,7 +336,17 @@ public class Veiculo implements Serializable, Classificação {
         ParDatas newPair = new ParDatas(inicio,fim);
         this.datasAlugueres.add(newPair);
     }
-        
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((marca == null) ? 0 : marca.hashCode())
+                + ((nif == null) ? 0 : nif.hashCode());
+        return result;
+    }
+
     /**
      * Compara a igualdade com outro objeto.
      * @param obj O objeto a comparar.

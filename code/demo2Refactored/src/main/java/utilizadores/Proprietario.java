@@ -39,7 +39,7 @@ public class Proprietario extends Utilizador {
     public Proprietario (Proprietario outroProp){
         super(outroProp);
     }
-     
+
     /**
      * Compara a igualdade com outro objeto.
      * @param obj O objeto a comparar.

@@ -153,7 +153,18 @@ public class Utilizador implements Serializable {
     /*****************************************************************************
      *                              END SETTERS                                  *
      *****************************************************************************/
-     
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((nome == null) ? 0 : nome.hashCode())
+                + ((password == null) ? 0 : password.hashCode())
+                + ((dataNascimento == null) ? 0 : dataNascimento.hashCode());
+        return result;
+    }
+
     /**
      * Compara a igualdade com outro objeto.
      * @param obj O objeto a comparar.
