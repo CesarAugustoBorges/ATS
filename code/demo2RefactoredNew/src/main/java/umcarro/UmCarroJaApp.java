@@ -1314,7 +1314,7 @@ public class UmCarroJaApp{
         }
        double dist = v.getPosicao().getDistancia(cords);
        Coordinate posCli = cli.getPosicao().clone();
-       Aluguer alug = new Aluguer(mail, v.getMatricula(), dataInicio, dataFim, v.custoViagem(dist), v.tempoAteVeiculoPéJa(posCli), v.tempoViagemCarroJa(cords), cords, dist, true, false, true, false, 3);
+       Aluguer alug = new Aluguer(mail, v.getMatricula(), dataInicio, dataFim, v.custoViagem(dist), v.tempoAteVeiculoPeJa(posCli), v.tempoViagemCarroJa(cords), cords, dist, true, false, true, false, 3);
        ucj.registaAluguer(alug);
        ucj.alterarPosAutonomiaVeiculo(v.getMatricula(), cords.clone());
        ucj.alterarPosCliente(mail, cords.clone());

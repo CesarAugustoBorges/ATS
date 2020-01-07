@@ -53,7 +53,7 @@ public class Coordinate implements Comparable<Coordinate>, Serializable {
   *****************************************************************************/
   
   public void setLatitude(double latitude) {
-    if(CoordinateManager.isValidLatitude(latitude) == true) {
+    if(CoordinateManager.isValidLatitude(latitude)) {
       this.latitude = latitude;
     } else {
       throw new IllegalArgumentException("The parameter did not pass validation as defined by the CoordinateManager class");
@@ -61,7 +61,7 @@ public class Coordinate implements Comparable<Coordinate>, Serializable {
   }
   
   public void setLongitude(double longitude) {
-    if(CoordinateManager.isValidLongitude(longitude) == true) {  
+    if(CoordinateManager.isValidLongitude(longitude)) {
       this.longitude = longitude;
     } else {
       throw new IllegalArgumentException("The parameter did not pass validation as defined by the CoordinateManager class");
@@ -115,9 +115,10 @@ public class Coordinate implements Comparable<Coordinate>, Serializable {
       return Objects.hash(latitude, longitude, format);
   }
 
+  @Override
   public boolean equals(Object o) {
       // check to make sure the object is an event
-      if ((o instanceof Coordinate) == false) {
+      if (!(o instanceof Coordinate)) {
           // o is not an event object
        return false;
     }
@@ -132,8 +133,13 @@ public class Coordinate implements Comparable<Coordinate>, Serializable {
     return me.equals(you);
     
   }
-
+  @Override
   public Coordinate clone(){
+      try{
+          super.clone();
+      } catch (CloneNotSupportedException e){
+
+      }
       return new Coordinate(this);
   }
 }

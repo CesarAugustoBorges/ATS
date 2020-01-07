@@ -314,6 +314,13 @@ public class Aluguer implements Serializable {
      */
     @Override
     public Aluguer clone(){
-        return new Aluguer(this);
+        Aluguer novo;
+        try{
+            super.clone();
+            novo = new Aluguer(this);
+        } catch (CloneNotSupportedException e){
+            novo = new Aluguer(this);
+        }
+        return novo;
     }  
 }

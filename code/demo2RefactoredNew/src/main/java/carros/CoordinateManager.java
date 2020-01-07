@@ -12,41 +12,39 @@ public class CoordinateManager{
   /**
    * Constante para a latitude mínima.
    */
-  public static final double MIN_LATITUDE = Double.valueOf("-90.0000");
+  public static final double MIN_LATITUDE = -90.0000;
   
   /**
    * Constante para a latitude máxima.
    */
-  public static final double MAX_LATITUDE = Double.valueOf("90.0000");
+  public static final double MAX_LATITUDE = 90.0000;
   
   /**
    * Constante para a longitude mínima.
    */
-  public static final double MIN_LONGITUDE = Double.valueOf("-180.0000");
+  public static final double MIN_LONGITUDE = -180.0000;
   
   /**
    * Constante para a longitude máxima.
    */
-  public static final double MAX_LONGITUDE = Double.valueOf("180.0000");
+  public static final double MAX_LONGITUDE = 180.0000;
   
   /**
    * Constante para o diâmentro da Terra.
    */
-  public static final double EARTH_DIAMETER = Double.valueOf("12756.274");
+  public static final double EARTH_DIAMETER = 12756.274;
 
   private static final String ILLEGAL_PARAMETER_MSG = "All parameters are required and must be valid";
-  
+
+  private CoordinateManager(){}
+
   /**
    *  Método que valida a latitude.
    *  @return true se a latitude está dentro do minimo e do maximo de latitude.  
    */
   
   public static boolean isValidLatitude(double latitude) {
-    if(latitude >= MIN_LATITUDE && latitude <= MAX_LATITUDE) {
-      return true;
-    } else {
-      return false;
-    }
+    return latitude >= MIN_LATITUDE && latitude <= MAX_LATITUDE;
   }
   
   /**
@@ -55,11 +53,7 @@ public class CoordinateManager{
    */
   
   public static boolean isValidLongitude(double longitude) {
-    if(longitude >= MIN_LONGITUDE && longitude <= MAX_LONGITUDE) {
-      return true;
-    } else {
-      return false;
-    }
+    return longitude >= MIN_LONGITUDE && longitude <= MAX_LONGITUDE;
   }
   
   /**
@@ -76,7 +70,6 @@ public class CoordinateManager{
   
   public static double longitudeConstant(double latitude) {
     return EARTH_DIAMETER * Math.PI * Math.abs(Math.cos(Math.abs(latitude))) / Double.valueOf("360");
-  
   }
   
   
@@ -87,12 +80,12 @@ public class CoordinateManager{
   public static Coordinate addDistanceNorth(double latitude, double longitude, int distance) {
   
     // verifica os parametros
-    if(isValidLatitude(latitude) == false || isValidLongitude(longitude) == false || distance <= 0) {
-      throw new IllegalArgumentException("All parameters are required and must be valid");
+    if(!isValidLatitude(latitude) || !isValidLongitude(longitude) || distance <= 0) {
+      throw new IllegalArgumentException(ILLEGAL_PARAMETER_MSG);
     }
     
     // converte metros para km
-    double kilometers = distance / new Double(1000);  
+    double kilometers = distance / (double) 1000;
     
     // calcula a nova latitude
     double newLat = latitude + (kilometers / latitudeConstant());
@@ -108,12 +101,12 @@ public class CoordinateManager{
   public static Coordinate addDistanceSouth(double latitude, double longitude, int distance) {
   
     // verifica os parametros
-    if(isValidLatitude(latitude) == false || isValidLongitude(longitude) == false || distance <= 0) {
+    if(!isValidLatitude(latitude) || !isValidLongitude(longitude) || distance <= 0) {
       throw new IllegalArgumentException(ILLEGAL_PARAMETER_MSG);
     }
     
     // converte metros para km
-    double kilometers = distance / new Double(1000);
+    double kilometers = distance / (double) 1000;
     
     // calcula a nova latitude
     double newLat = latitude - (kilometers / latitudeConstant());
@@ -129,7 +122,7 @@ public class CoordinateManager{
   public static Coordinate addDistanceEast(double latitude, double longitude, int distance) {
   
     // verifica os parametros
-    if(isValidLatitude(latitude) == false || isValidLongitude(longitude) == false || distance <= 0) {
+    if(!isValidLatitude(latitude) || !isValidLongitude(longitude) || distance <= 0) {
       throw new IllegalArgumentException(ILLEGAL_PARAMETER_MSG);
     }
     
@@ -147,7 +140,7 @@ public class CoordinateManager{
   public static Coordinate addDistanceWest(double latitude, double longitude, int distance) {
   
     // verifica os parametros
-    if(isValidLatitude(latitude) == false || isValidLongitude(longitude) == false || distance <= 0) {
+    if(!isValidLatitude(latitude) || !isValidLongitude(longitude) || distance <= 0) {
       throw new IllegalArgumentException(ILLEGAL_PARAMETER_MSG);
     }
     
@@ -167,11 +160,11 @@ public class CoordinateManager{
   public static java.util.HashMap<String, Coordinate> getBoundingBox(double latitude, double longitude, int distance) {
   
     // verifica os parametros
-    if(isValidLatitude(latitude) == false || isValidLongitude(longitude) == false || distance <= 0) {
+    if(!isValidLatitude(latitude) || !isValidLongitude(longitude) || distance <= 0) {
       throw new IllegalArgumentException(ILLEGAL_PARAMETER_MSG);
     }
     
-    HashMap<String, Coordinate> boundingBox = new java.util.HashMap<String, Coordinate>();
+    HashMap<String, Coordinate> boundingBox = new java.util.HashMap<>();
     
     // calcula coordenadas
     Coordinate north = addDistanceNorth(latitude, longitude, distance);

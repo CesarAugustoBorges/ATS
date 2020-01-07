@@ -252,27 +252,27 @@ public class Veiculo implements Serializable, Classificação {
      * @param posicaoCli Posição inicial.
      * @return int Tempo em minutos a pé até ao veículo.
      */
-    public int tempoAteVeiculoPé(Coordinate posicaoCli, Weather weath){
+    public int tempoAteVeiculoPe(Coordinate posicaoCli){
         double dist = posicaoCli.getDistancia(this.posicao);
-        Long tempo = Math.round((dist * 60) / 4 * weath.getPercentage(this.posicao.getLatitude(), this.posicao.getLongitude()));
-        return Integer.valueOf(tempo.intValue());
+        Long tempo = Math.round((dist * 60) / 4 * Weather.getPercentage(this.posicao.getLatitude(), this.posicao.getLongitude()));
+        return tempo.intValue();
     }
 
     /** Método que devolve o preço de uma viagem mediante uma distância recebida como parâmetro.
      * @param destino Destino.
      * @return int Representa o tempo em minutos da viagem.
      */
-    public int tempoViagemCarro(Coordinate destino, Weather weath){
+    public int tempoViagemCarro(Coordinate destino){
         double dist = this.posicao.getDistancia(destino);
-        Long tempoMin = Math.round((dist * 60) / 70 * weath.getPercentage(this.posicao.getLatitude(), this.posicao.getLongitude()));
-        return Integer.valueOf(tempoMin.intValue());
+        Long tempoMin = Math.round((dist * 60) / 70 * Weather.getPercentage(this.posicao.getLatitude(), this.posicao.getLongitude()));
+        return tempoMin.intValue();
     }
     
     /** Método que devolve o tempo a pé até ao veículo, mediante uma posição recebida como parâmetro.
      * @param posicaoCli Posição inicial.
      * @return int Tempo em minutos a pé até ao veículo.
      */
-    public int tempoAteVeiculoPéJa(Coordinate posicaoCli){
+    public int tempoAteVeiculoPeJa(Coordinate posicaoCli){
         double dist = posicaoCli.getDistancia(this.posicao);
         Long tempo = Math.round((dist * 60) / 4);
         return Integer.valueOf(tempo.intValue());
@@ -303,8 +303,8 @@ public class Veiculo implements Serializable, Classificação {
     public void abastecerVeiculo(double quantidade){
         BigDecimal qtd = BigDecimal.valueOf(quantidade);
         BigDecimal autonomiaInicial = BigDecimal.valueOf(this.getAutonomia());
-        BigDecimal consumo = BigDecimal.valueOf(this.getConsumo());
-        BigDecimal autonomiaAbastecimento = qtd.divide(consumo);
+        BigDecimal consumoDecimal = BigDecimal.valueOf(this.getConsumo());
+        BigDecimal autonomiaAbastecimento = qtd.divide(consumoDecimal);
         BigDecimal autonomiaFinal = autonomiaAbastecimento.add(autonomiaInicial);
         
         int autonomiaTotal = autonomiaFinal.intValue();
@@ -321,10 +321,7 @@ public class Veiculo implements Serializable, Classificação {
      */
 
     public boolean verificaAutonomia(int val1, int val2){
-        if(this.getAutonomia() >= val1 && this.getAutonomia() <= val2){
-            return true; 
-        }
-        return false;
+        return this.getAutonomia() >= val1 && this.getAutonomia() <= val2;
     }
     
     /**
@@ -390,6 +387,13 @@ public class Veiculo implements Serializable, Classificação {
      * @return Veiculo Um novo veículo, que é cópia do this.
      */
     public Veiculo clone(){
-        return new Veiculo(this);
+        Veiculo veiculo;
+        try{
+            super.clone();
+            veiculo = new Veiculo(this);
+        } catch (CloneNotSupportedException e) {
+            veiculo = new Veiculo(this);
+        }
+        return veiculo;
     }
 }
