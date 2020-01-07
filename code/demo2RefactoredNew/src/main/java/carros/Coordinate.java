@@ -135,11 +135,13 @@ public class Coordinate implements Comparable<Coordinate>, Serializable {
   }
   @Override
   public Coordinate clone(){
+      Coordinate coordinate;
       try{
           super.clone();
+          coordinate = new Coordinate(this);
       } catch (CloneNotSupportedException e){
-
+          coordinate = new Coordinate(this);
       }
-      return new Coordinate(this);
+      return coordinate;
   }
 }

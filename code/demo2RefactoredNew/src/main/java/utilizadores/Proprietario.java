@@ -45,6 +45,7 @@ public class Proprietario extends Utilizador {
      * @param obj O objeto a comparar.
      * @return true se forem iguais, false caso contrário.
      */
+    @Override
     public boolean equals(Object obj) {
         if(obj==this) return true; 
         
@@ -58,6 +59,7 @@ public class Proprietario extends Utilizador {
      * Devolve uma representação do objeto em formato textual.
      * @return String Representa o objeto em formato textual.
      */
+    @Override
     public String toString(){
        return super.toString();
     }
@@ -66,7 +68,9 @@ public class Proprietario extends Utilizador {
      * Retorna uma cópia da instância.
      * @return Proprietario Um novo proprietário que é cópia do this.
      */
+    @Override
     public Proprietario clone(){
+        super.clone();
         return new Proprietario(this);
     }   
 }

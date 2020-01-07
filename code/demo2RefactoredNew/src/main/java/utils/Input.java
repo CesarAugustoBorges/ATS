@@ -30,6 +30,7 @@ public class Input {
  /**
   * Métodos de Classe
   */
+ private Input(){}
 
  private static Scanner scanner = new Scanner(in);
 
@@ -157,49 +158,21 @@ public class Input {
              
              try {
                  ft.parse(str);
+                 fields = str.split("-");
+                 d = Integer.parseInt(fields[0].trim());
+                 m = Integer.parseInt(fields[1].trim());
+                 y = Integer.parseInt(fields[2].trim());
              }
              
              /* Caso a data não seja válida, é exibida a mensagem de erro e é pedido que se insira uma nova 
               * data. */
              
-             catch (ParseException e) {
+             catch (ParseException | NumberFormatException | NullPointerException e) {
                  out.println(errorMessage);
                  out.print(message);
                  continue;
              }
-             
-             /* Separam-se os campos pelo carater "-". */
-             
-             fields = str.split("-");
-             
-             /* São lançadas as exceções relativas à leitura de um inteiro para cada um dos três campos. */
-             
-             try {
-                 d = Integer.parseInt(fields[0].trim());
-             }
-             catch (NumberFormatException | NullPointerException e) {
-                 out.println(errorMessage);
-                 out.print(message);
-                 continue;
-             }
-             
-             try {
-                 m = Integer.parseInt(fields[1].trim());
-             }
-             catch (NumberFormatException | NullPointerException e) {
-                 out.println(errorMessage);
-                 out.print(message);
-                 continue;
-             }
-             
-             try {
-                 y = Integer.parseInt(fields[2].trim());
-             }
-             catch (NumberFormatException | NullPointerException e) {
-                 out.println(errorMessage);
-                 out.print(message);
-                 continue;
-             }
+
              
              /* O boolean ok é posto a true, indicando que foi lida uma data válida. */
              

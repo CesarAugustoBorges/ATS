@@ -14,19 +14,20 @@ import com.google.gson.*;
 import com.google.gson.reflect.*;
 
 public class Weather {
+    private Weather(){}
+
     /**
      * COnstrutor para objetos da classe Weather
      */
     public static Map<String, Object> jsonToMap(String str) {
-        Map <String, Object> map = new Gson().fromJson(str, new TypeToken<HashMap<String, Object>>() {}.getType());
-        return map;
+        return new Gson().fromJson(str, new TypeToken<HashMap<String, Object>>() {}.getType());
     }
     /**
      * Calcurar percentagem de subida de preço dependendo do tempo
      */
     public static double getPercentage( double latitude, double longitude){
-        String api_key = "28c4efcbaf88fde7e5ae89d0b8f05dcd";
-        String urlString = "http://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude +"&appid=" + api_key;
+        String apiKey = "28c4efcbaf88fde7e5ae89d0b8f05dcd";
+        String urlString = "http://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude +"&appid=" + apiKey;
         double percentage = 0.0;
      try {
          StringBuilder result = new StringBuilder();

@@ -170,6 +170,7 @@ public class Utilizador implements Serializable {
      * @param obj O objeto a comparar.
      * @return true se forem iguais, false caso contrário.
      */
+    @Override
     public boolean equals(Object obj) {
         if(obj==this) return true;
         if(obj==null || obj.getClass()!=this.getClass()) return false;
@@ -183,6 +184,7 @@ public class Utilizador implements Serializable {
      * Devolve uma representação do objeto em formato textual.
      * @return String Representa o objeto em formato textual.
      */
+    @Override
     public String toString() {
        StringBuilder str = new StringBuilder();
        
@@ -203,8 +205,16 @@ public class Utilizador implements Serializable {
      * Retorna uma cópia da instância.
      * @return Utilizador Um novo utilizador que é cópia do this.
      */
+    @Override
     public Utilizador clone(){
-        return new Utilizador(this);
+        Utilizador utilizador;
+        try{
+            super.clone();
+            utilizador = new Utilizador(this);
+        } catch (Exception e){
+            utilizador = new Utilizador(this);
+        }
+        return utilizador;
     }  
 }
 

@@ -7,7 +7,7 @@ import carros.Coordinate;
 
 import java.util.GregorianCalendar;
 
-public class Cliente extends Utilizador implements Classificação {
+public class Cliente extends Utilizador implements Classificacao {
     
     /* Posição em que se encontra o cliente. */
     private Coordinate posicao;
@@ -142,6 +142,7 @@ public class Cliente extends Utilizador implements Classificação {
      * @param obj O objeto a comparar.
      * @return true se forem iguais, false caso contrário.
      */
+    @Override
     public boolean equals(Object obj){
         if(obj==this) return true;
         
@@ -158,6 +159,7 @@ public class Cliente extends Utilizador implements Classificação {
      * Devolve uma representação do objeto em formato textual.
      * @return String Representa o objeto em formato textual.
      */
+    @Override
     public String toString() {
        StringBuilder str = new StringBuilder();
        str.append(super.toString());
@@ -172,7 +174,9 @@ public class Cliente extends Utilizador implements Classificação {
      * Retorna uma cópia da instância.
      * @return Cliente Um novo cliente que é cópia do this.
      */
+    @Override
     public Cliente clone(){
+        super.clone();
         return new Cliente(this);
     } 
 }

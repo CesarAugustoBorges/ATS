@@ -5,7 +5,7 @@ package utilizadores;
  * 
  */
 
-public interface Classificação{
+public interface Classificacao {
     
     /**
      * Método que devolve a classificação.

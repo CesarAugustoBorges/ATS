@@ -18,6 +18,8 @@ import java.util.InputMismatchException;
 
 public class ParseDados{
 
+    private ParseDados(){}
+
     public static Proprietario parseProprietario(String linha){
         String nome;
         String nif;
@@ -63,6 +65,8 @@ public class ParseDados{
             y = Double.parseDouble(dados[5]);
         }
         catch(InputMismatchException exc){
+            //Adicionado por César
+            return null;
         }
 
         Coordinate cords = new Coordinate(x,y);

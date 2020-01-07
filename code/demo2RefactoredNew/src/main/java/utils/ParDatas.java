@@ -28,7 +28,7 @@ public class ParDatas implements Serializable {
     
     /**
      * Construtor por parâmetro.
-     * @param beggining  Data de início do evento.
+     * @param beginning  Data de início do evento.
      * @param end        Data de início do evento.
      */
     public ParDatas(GregorianCalendar beginning, GregorianCalendar end){
@@ -38,7 +38,7 @@ public class ParDatas implements Serializable {
     
     /**
      * Construtor por cópia.
-     * @param outroVeiculo Um outro veículo.
+     * @param outroPar Um outro veículo.
      */
     public ParDatas(ParDatas outroPar){
         this.dataInicio = outroPar.getDataInicio();
@@ -132,7 +132,12 @@ public class ParDatas implements Serializable {
        return str.toString();         
     }
     public ParDatas clone(){
-        return new ParDatas(this);
+        try{
+            super.clone();
+            return new ParDatas(this);
+        } catch (CloneNotSupportedException e){
+            return new ParDatas(this);
+        }
     }
     /**
      * Retorna uma cópia da instância.

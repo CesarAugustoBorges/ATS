@@ -7,7 +7,7 @@ package carros; /**
  * @version 20190415
  */
 
-import utilizadores.Classificação;
+import utilizadores.Classificacao;
 import utils.ParDatas;
 import utils.Weather;
 
@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 
 import java.util.GregorianCalendar;
 
-public class Veiculo implements Serializable, Classificação {
+public class Veiculo implements Serializable, Classificacao {
     
     /** Variáveis de Instância */
     

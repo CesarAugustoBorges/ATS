@@ -51,8 +51,13 @@ public class UmCarroJaApp{
 
     private static final String NO_RENTAL = "Não existem alugures entre essas datas.";
     private static final String SEPARATOR = "---------------------------------------------------";
+    private static final String SEPARATOR2 = "------------------------------------------------\n";
+    private static final String INVALID_EMAIL = "Email Inválido!";
+    private static final String INVALID_MATR = "Matricula Inválida!";
+    private static final String ALREADY_REGISTED = "já está registado!";
+    private static final String WRITE_MATR_AGAIN = "Digite Novamente a Matrícula do Veículo: ";
 
-    
+
     /** O construtor é privado, pois não queremos instâncias da mesma. */
     private UmCarroJaApp() {}
 
@@ -93,34 +98,34 @@ public class UmCarroJaApp{
                                  "Menu Utilizador",
                                  "Menu Administração",
                                  "Guardar Dados da Aplicação"};
-                                 
+
         String[] utilizador =   {"Menu Utilizador",
-                                 "Iniciar Sessão", 
+                                 "Iniciar Sessão",
                                  "Registar Utilizador"};
-                                 
+
         String[] admin =        {"Menu Administração",
                                  "Extrato de Aluguer de uma Viatura num Determinado Período",
                                  "10 Clientes com Mais Alugueres",
                                  "10 Clientes com Mais Km Percorridos"};
-        
+
         String[] proprietario = {"Menu Proprietário",
                                  "Registar Viatura",
-                                 "Sinalizar Viatura Disponível", 
-                                 "Abastecer Veículo", 
-                                 "Alterar o Preço por Km", 
-                                 "Aceitar/Rejeitar Alugueres", 
+                                 "Sinalizar Viatura Disponível",
+                                 "Abastecer Veículo",
+                                 "Alterar o Preço por Km",
+                                 "Aceitar/Rejeitar Alugueres",
                                  "Registar Suplemento no Preço da Viagem",
                                  "Meus Alugueres",
                                  "Valor Faturado entre Datas"};
-        
+
         String[] cliente =      {"Menu Cliente",
-                                 "Alugar Veículo Mais Próximo", 
-                                 "Alugar Veículo Mais Barato", 
-                                 "Alugar Veículo Mais Barato num Perímetro", 
-                                 "Alugar Viatura Específica", 
+                                 "Alugar Veículo Mais Próximo",
+                                 "Alugar Veículo Mais Barato",
+                                 "Alugar Veículo Mais Barato num Perímetro",
+                                 "Alugar Viatura Específica",
                                  "Alugar Viatura com Determinada Autonomia",
                                  "Meus Alugueres"};
-        
+
         menuInicial = new Menu(inicial);
         menuUtilizador = new Menu(utilizador);
         menuAdmin = new Menu(admin);
@@ -151,7 +156,7 @@ public class UmCarroJaApp{
     private static void clearScreen(){
         System.out.print('\u000C');
     }
-    
+
     public static void main(String[] args){
         initApp();
         initMenus();
@@ -161,7 +166,7 @@ public class UmCarroJaApp{
         out.println("NÚMERO VEÍCULOS: " + ucj.getNVeiculos());
         out.println("NÚMERO ALUGUERES: " + ucj.getNAlugs());
         lerData();
-        
+
         ucj.alugueresEfetuados(dataInicioApp);
         do{
             UmCarroJaApp.clearScreen();
@@ -178,11 +183,11 @@ public class UmCarroJaApp{
         }while(menuInicial.getOpcao() != 0);
         guardarDados();
     }
-    
+
     /******************************************************************************
      *                            MENU DOS UTILIZADORES                           *
      ******************************************************************************/
-     
+
     private static void menuUtilizador(){
         UmCarroJaApp.clearScreen();
         do{
@@ -203,10 +208,10 @@ public class UmCarroJaApp{
             }
         }while(menuUtilizador.getOpcao() != 0);
     }
-    
+
     /**
      * @brief Método responsável pela exibição das informações que permitem a um utilizador autenticar-se na aplicação.
-     * 
+     *
      * Primeiro pede-se e verifica-se o email e a password do utilizador. Caso o login esteja correto, verifica-se se
      * se trata de um cliente ou de um proprietário e chama-se o método respetivo para iniciar sessão. São ainda lançadas
      * as exceções UtilizadorNaoExisteException caso o utilizador não esteja registado e a exceção
@@ -215,15 +220,15 @@ public class UmCarroJaApp{
     private static void iniciarSessao() throws UtilizadorNaoExisteException, PasswordIncorretaException {
         String email;
         String password;
-        
+
         UmCarroJaApp.clearScreen();
-        
+
         out.print("Digite o seu Email: ");
-        email = Input.lerString("Email Inválido!", "Digite novamente o seu Email: ");
-        
+        email = Input.lerString(INVALID_EMAIL, "Digite novamente o seu Email: ");
+
         out.print("Digite a sua Password: ");
         password = Input.lerString("Password Inválida!", "Digite novamente a sua Password: ");
-        
+
         try{
             ucj.iniciarSessao(email, password);
                 if (ucj.getUtilizador(email) instanceof Proprietario){
@@ -248,84 +253,84 @@ public class UmCarroJaApp{
         String nif;
         String morada;
         GregorianCalendar dataNascimento;
-        
+
         boolean existe = true;
         int tipoUser;
-        
+
         UmCarroJaApp.clearScreen();
-        
+
         while(existe){
             out.print("Digite o seu Email: ");
-            email = Input.lerString("Email Inválido!", "Digite novamente o seu Email: ");
+            email = Input.lerString(INVALID_EMAIL, "Digite novamente o seu Email: ");
             existe = ucj.existeUtilizador(email);
             if (existe){
                 out.println("Já existe um utilizador com o email introduzido!");
             }
         }
-        
+
         out.print("Digite a sua Password: ");
         password = Input.lerString("Password Inválida!", "Digite novamente a sua Password: ");
-        
+
         out.print("Digite o seu Nome Completo: ");
         nome = Input.lerString("Nome Inválido!", "Digite novamente o seu Nome Completo: ");
-        
+
         out.print("Digite o seu NIF: ");
         nif = Input.lerString("NIF Inválido!", "Digite novamente o seu NIF: ");
-        
+
         out.print("Digite a sua Morada: ");
         morada = Input.lerString("Morada Inválida!", "Digite novamente a sua Morada: ");
-        
+
         out.print("Digite a sua Data de Nascimento (dd-mm-aaaa): ");
         dataNascimento = Input.lerData("Data de Nascimento Inválida!", "Digite novamente a sua Data de Nascimento (dd-mm-aaaa): ");
-            
+
         tipoUser = Menu.menuLerInt(1, 2, "\n******************\n1 - Proprietário\n2 - Cliente.\nEscolha o Tipo de Utilizador: ",
                                  "Tipo de Utilizador Inválido!, Tente novamente!");
-                                 
+
         if (tipoUser == 1){
             UmCarroJaApp.registarProprietario(nome, nif, email, password, morada, dataNascimento);
         }else{
             UmCarroJaApp.registarCliente(nome, nif, email, password, morada, dataNascimento);
         }
     }
-    
-    private static void registarProprietario(String nome, String nif, String email, String password, 
+
+    private static void registarProprietario(String nome, String nif, String email, String password,
                                             String morada, GregorianCalendar data){
-                                                
+
         Proprietario prop = new Proprietario(nome, nif, email, password, morada, data);
-                                            
+
         try {
             ucj.registarUtilizador(prop);
             guardarDados();
         }
         catch (UtilizadorJaExisteException e) {
-            out.println("O proprietário " + e.getMessage() +  " já está registado!\n");
+            out.println("O proprietário " + e.getMessage() +  " " + ALREADY_REGISTED +"\n");
         }
     }
-    
-    private static void registarCliente(String nome, String nif, String email, String password, 
+
+    private static void registarCliente(String nome, String nif, String email, String password,
                                        String morada, GregorianCalendar data){
         double latitude;
         double longitude;
-        
+
         out.print("Digite a sua Latitude: ");
         latitude = Input.lerDouble(latInv, "Digite novamente a sua Latitude: ");
-        
+
         out.print("Digite a sua Longitude: ");
         longitude = Input.lerDouble(longInv, "Digite novamente a sua Longitude: ");
-        
+
         Coordinate cords = new Coordinate(latitude, longitude);
-        
+
         Cliente cli = new Cliente(nome, nif, email, password, morada, data, cords, 0, 0, 0.0);
-                                            
+
         try {
             ucj.registarUtilizador(cli);
             guardarDados();
         }
         catch (UtilizadorJaExisteException e) {
-            out.println("O cliente " + e.getMessage() +  " já está registado!\n");
-        }                       
+            out.println("O cliente " + e.getMessage() +  " " + ALREADY_REGISTED +"\n");
+        }
     }
-    
+
     /******************************************************************************
      *                         FIM DO MENU DOS UTILIZADORES                       *
      ******************************************************************************/
@@ -334,7 +339,7 @@ public class UmCarroJaApp{
     /******************************************************************************
      *                            MENU DA ADMINISTRAÇÃO                           *
      ******************************************************************************/
-    
+
     private static void menuAdmin(){
         UmCarroJaApp.clearScreen();
         do{
@@ -358,7 +363,7 @@ public class UmCarroJaApp{
         UmCarroJaApp.clearScreen();
 
         out.print(dmv);
-        matricula = Input.lerString("Matrícula Inválida!", "Digite Novamente a Matrícula do Veículo: ");
+        matricula = Input.lerString("Matrícula Inválida!", WRITE_MATR_AGAIN);
 
         do {
             out.print("Digite a Data de Início (dd-mm-aaaa): ");
@@ -380,9 +385,9 @@ public class UmCarroJaApp{
             out.print(NO_RENTAL);
         } else {
             for(Aluguer a : alugs){
-                out.println("------------------------------------------------\n");
+                out.println(SEPARATOR2);
                 out.println(a.toString());
-                out.println("------------------------------------------------\n");
+                out.println(SEPARATOR2);
             }
         }
     }
@@ -398,9 +403,9 @@ public class UmCarroJaApp{
         }
 
         for(Cliente c : lista){
-            out.println("------------------------------------------------\n");
+            out.println(SEPARATOR2);
             out.println(c.toString());
-            out.println("------------------------------------------------\n");
+            out.println(SEPARATOR2);
         }
     }
 
@@ -415,21 +420,21 @@ public class UmCarroJaApp{
         }
 
         for(Cliente c : lista){
-            out.println("------------------------------------------------\n");
+            out.println(SEPARATOR2);
             out.println(c.toString());
-            out.println("------------------------------------------------\n");
+            out.println(SEPARATOR2);
         }
     }
-     
+
     /******************************************************************************
      *                         FIM DO MENU DA ADMINISTRAÇÃO                       *
      ******************************************************************************/
 
-    
+
     /******************************************************************************
      *                              MENU PROPRIETÁRIOS                            *
      *****************************************************************************/
-     
+
     private static void sessaoProprietario(){
         do{
             classificarClientes();
@@ -439,7 +444,7 @@ public class UmCarroJaApp{
                 case 1: registarVeiculoProp();
                         break;
                 case 2: setVeiculoDisponivel();
-                        break;     
+                        break;
                 case 3: abastecerVeiculoProp();
                         break;
                 case 4: altPKMVeiculo();
@@ -488,9 +493,9 @@ public class UmCarroJaApp{
             ucj.classificarCliente(alug, classificacao);
         }
     }
-     
+
     private static void registarVeiculoProp(){
-        String marca; 
+        String marca;
         String matricula = "";
         String nif = ucj.getUserNIF();
         int velocidade;
@@ -503,48 +508,48 @@ public class UmCarroJaApp{
         boolean disponivel;
         int classificacao = 0;
         List<ParDatas> datasAlugueres = new ArrayList<>();
-        
+
         boolean existe = true;
         int tipoVeiculo;
-        
+
         UmCarroJaApp.clearScreen();
-       
-       
+
+
        while(existe){
             out.print(dmv);
-            matricula = Input.lerString("Matricula Inválida!", "Digite novamente a matricula do veículo: ");
+            matricula = Input.lerString(INVALID_MATR, WRITE_MATR_AGAIN);
             existe = ucj.existeVeiculo(matricula);
             if (existe){
                 out.println("Já existe um veículo com a matricula introduzida!");
             }
        }
-        
+
         out.print("Digite a marca do Veículo: ");
         marca = Input.lerString("Marca Inválida!", "Digite novamente a marca do veículo: ");
-        
+
         out.print("Digite o velocidade média do veículo: ");
         velocidade = Input.lerInt("Velocidade média do veículo Inválida!", "Digite novamente a velocidade média do veículo: ");
-        
+
         out.print("Digite o preço base por Km do veículo: ");
         preco = Input.lerDouble("Preço base por Km do veículo Inválida!", "Digite novamente o preço base por Km do veículo: ");
-        
+
         out.print("Digite o consumo por Km percorrido do veículo: ");
         consumo = Input.lerDouble("Consumo por Km percorrido do veículo Inválida!", "Digite novamente o consumo por Km percorrido do veículo: ");
-        
+
         out.print("Digite a autonomia do veículo: ");
         autonomia = Input.lerInt("Autonomia do veículo Inválida!", "Digite novamente a autonomia do veículo: ");
-        
+
         out.print("Digite a disponibilidade do veículo [true - disponível, false - indisponível]: ");
         disponivel = Input.lerBoolean("Disponobilidade do veículo Inválida!", "Digite novamente a disponibilidade do veículo: ");
-        
+
         out.print("Digite o latitude de localização do veículo: ");
         latitude = Input.lerDouble("Latitude de localização fo veículo Inválida!", "Digite novamente a latitude de localização do veículo: ");
-        
+
         out.print("Digite o longitude de localização do veículo: ");
         longitude = Input.lerDouble("Longitude de localização fo veículo Inválida!", "Digite novamente a longitude de localização do veículo: ");
-        
+
         posicao = new Coordinate(latitude, longitude);
-        
+
         tipoVeiculo = Menu.menuLerInt(1, 3, "\n******************\n1 - Combustível.\n2 - Elétrico.\n3 - Hibrido.\nEscolha o Tipo de Veículo: ",
                                  "Tipo de Veículo Inválido!, Tente novamente!");
         Veiculo vr;
@@ -563,23 +568,23 @@ public class UmCarroJaApp{
             UmCarroJaApp.guardarDados();
         }
         catch (VeiculoJaExisteException e) {
-            out.println("O Veiculo " + e.getMessage() +  " já está registado!\n");
+            out.println("O Veiculo " + e.getMessage() +  " " + ALREADY_REGISTED+ "\n");
         }
-    }   
-     
+    }
+
     private static void setVeiculoDisponivel(){
         String matricula;
         boolean disp;
-        
+
         UmCarroJaApp.clearScreen();
-       
+
         out.print(dmv);
-        matricula = Input.lerString("Matricula Inválida!", "Digite novamente a matricula do veículo: ");
-        
-        
+        matricula = Input.lerString(INVALID_MATR, WRITE_MATR_AGAIN);
+
+
         out.print("Digite a disponibilidade do veículo: ");
         disp = Input.lerBoolean("Disponobilidade do veículo Inválida!", "Digite novamente a disponibilidade do veículo: ");
-        
+
         try {
             ucj.sinalizarDisponibilidade(matricula, disp);
             UmCarroJaApp.guardarDados();
@@ -591,20 +596,20 @@ public class UmCarroJaApp{
             out.println("O Veiculo " + e2.getMessage() +  " não lhe pertence!\n");
         }
     }
-    
+
     private static void abastecerVeiculoProp(){
         String matricula;
         double abast;
-        
+
         UmCarroJaApp.clearScreen();
-        
+
         out.print(dmv);
-         matricula = Input.lerString("Matricula Inválida!", "Digite novamente a matricula do veículo: ");
-        
-        
+         matricula = Input.lerString(INVALID_MATR, WRITE_MATR_AGAIN);
+
+
         out.print("Digite quanto desejada a abastecer: ");
         abast = Input.lerDouble("Quantidade Inválida!", "Digite novamente a quantidade a abastecer: ");
-        
+
         try {
             ucj.abastecerVeiculo(matricula, abast);
             UmCarroJaApp.guardarDados();
@@ -616,20 +621,20 @@ public class UmCarroJaApp{
             out.println("O Veiculo " + e2.getMessage() +  " não lhe pertence!\n");
         }
     }
-    
+
     private static void altPKMVeiculo(){
         String matricula;
         double pkm;
-        
+
         UmCarroJaApp.clearScreen();
-        
+
         out.print(dmv);
-        matricula = Input.lerString("Matricula Inválida!", "Digite novamente a matricula do veículo: ");
-        
-        
+        matricula = Input.lerString(INVALID_MATR, WRITE_MATR_AGAIN);
+
+
         out.print("Digite novo preço por km: ");
         pkm = Input.lerDouble("Preço por km Inválida!", "Digite novamente um novo preço por km: ");
-        
+
         try {
             ucj.altPrecoKm(matricula, pkm);
         }
@@ -661,46 +666,46 @@ public class UmCarroJaApp{
 
         UmCarroJaApp.clearScreen();
 
-        if(alugs.size() == 0) {
+        if(alugs.isEmpty()) {
             out.print("Não existe alugures entre essas datas.");
         } else {
             for(Aluguer a : alugs){
-                out.println("------------------------------------------------\n");
+                out.println(SEPARATOR2);
                 out.println(a.toString());
-                out.println("------------------------------------------------\n");
+                out.println(SEPARATOR2);
             }
         }
     }
-    
+
     private static void analisarAlugueres(){
         List<Aluguer> alugs = ucj.determinarListaEspera(ucj.getUserNIF());
         boolean rep;
         UmCarroJaApp.clearScreen();
-        
+
         for(Aluguer a : alugs) {
             a.toString();
             out.print("Digite se pretende aceitar aluguer (Sim - true, Não - false): ");
             rep = Input.lerBoolean("Resposta Inválida!", "Digite novamente uma nova resposta: ");
-            
+
             ucj.respostaProp(rep,a);
         }
     }
-    
+
     public static void suplementoPrecoAlug(){
         String matricula;
         String nifCliente;
         double newPrice;
         List<Aluguer> alugs = new ArrayList();
         UmCarroJaApp.clearScreen();
-        
+
         out.print(dmv);
-        matricula = Input.lerString("Matricula Inválida!", "Digite novamente a matricula do veículo: ");
-        
-        
+        matricula = Input.lerString(INVALID_MATR, WRITE_MATR_AGAIN);
+
+
         out.print("Digite o Email do cliente: ");
-        nifCliente = Input.lerString("Email Inválido!", "Digite novamente o Email do cliente: ");
-        
-        
+        nifCliente = Input.lerString(INVALID_EMAIL, "Digite novamente o Email do cliente: ");
+
+
         try {
             alugs = ucj.determinarListaAlugCli(matricula, nifCliente);
         }
@@ -710,10 +715,10 @@ public class UmCarroJaApp{
         catch (UtilizadorNaoExisteException e2) {
             out.println("O cliente " + e2.getMessage() +  " não existe!\n");
         }
-        
+
         boolean rep;
         boolean flag=false;
-        
+
         if(alugs.isEmpty()){
             out.println("Não existem alugueres por por parte do cliente " + nifCliente + " no veículo com matrícula " + matricula + ".\n");
         } else {
@@ -736,17 +741,17 @@ public class UmCarroJaApp{
         }
         UmCarroJaApp.guardarDados();
      }
-    
+
     public static void calcFactBDates(){
         String matricula;
         GregorianCalendar inicio;
         GregorianCalendar fim;
         double total = 0;
         UmCarroJaApp.clearScreen();
-        
+
         out.print(dmv);
-        matricula = Input.lerString("Matricula Inválida!", "Digite novamente a matricula do veículo: ");
-         
+        matricula = Input.lerString(INVALID_MATR, WRITE_MATR_AGAIN);
+
         do {
             out.print("Digite a Data limite inferior (dd-mm-aaaa): ");
             inicio = Input.lerData("Data limite inferior Inválida!", "Digite novamente a Data limite inferior (dd-mm-aaaa): ");
@@ -761,7 +766,7 @@ public class UmCarroJaApp{
         catch (VeiculoNaoESeuException e) {
             out.println("O Veículo " + e.getMessage() +  " não está registado no seu historial de alugueres!\n");
         }
-       
+
         StringBuilder str = new StringBuilder();
         str.append("O total facturado pelo veículo de matrícula "); str.append(matricula);
         str.append(" faturou no total: "); str.append(total);
@@ -792,11 +797,11 @@ public class UmCarroJaApp{
     /******************************************************************************
      *                         FIM DO MENU DOS PROPRIETÁRIOS                      *
      ******************************************************************************/
-     
+
     /******************************************************************************
      *                               MENU DOS CLIENTES                            *
      ******************************************************************************/
-    
+
     private static void sessaoCliente(){
         do{
             classificarVeiculos();
@@ -806,7 +811,7 @@ public class UmCarroJaApp{
                 case 1: aluguerMaisProximo();
                         break;
                 case 2: aluguerMaisBarato();
-                        break;     
+                        break;
                 case 3: aluguerMaisBaratoPerimetro();
                         break;
                 case 4: aluguerVeiculoEspecifico();
@@ -895,14 +900,14 @@ public class UmCarroJaApp{
         }
 
         for(Veiculo v: veiculosMaisProximo){
-            out.print("------------------------------------------------\n");
+            out.print(SEPARATOR2);
             out.print(v.toString());
-            out.print("------------------------------------------------\n");
+            out.print(SEPARATOR2);
         }
 
         do{
             out.print("Introduza a Matrícula do Veículo que Pretende Alugar: ");
-            matricula = Input.lerString("Matricula Inválida!", "Digite Novamente a Matrícula do Veículo: ");
+            matricula = Input.lerString(INVALID_MATR, WRITE_MATR_AGAIN);
             final String matr = matricula;
             if (veiculosMaisProximo.stream().filter(v -> v.getMatricula().equals(matr)).count() > 0){
                 correto = true;
@@ -953,14 +958,14 @@ public class UmCarroJaApp{
         }
 
         for(Veiculo v: veiculosMaisBaratos){
-            out.println("------------------------------------------------\n");
+            out.println(SEPARATOR2);
             out.println(v.toString());
-            out.println("------------------------------------------------\n");
+            out.println(SEPARATOR2);
         }
 
         do{
             out.print("Introduza a Matrícula do Veículo que Pretende Alugar: ");
-            matricula = Input.lerString("Matricula Inválida!", "Digite Novamente a Matrícula do Veículo: ");
+            matricula = Input.lerString(INVALID_MATR, WRITE_MATR_AGAIN);
             final String matr = matricula;
             if (veiculosMaisBaratos.stream().filter(v -> v.getMatricula().equals(matr)).count() > 0){
                 correto = true;
@@ -1016,14 +1021,14 @@ public class UmCarroJaApp{
         }
 
         for(Veiculo v: veiculosMaisBaratosPeri){
-            out.println("------------------------------------------------\n");
+            out.println(SEPARATOR2);
             out.println(v.toString());
-            out.println("------------------------------------------------\n");
+            out.println(SEPARATOR2);
         }
 
         do{
             out.print("Introduza a Matrícula do Veículo que Pretende Alugar: ");
-            matricula = Input.lerString("Matricula Inválida!", "Digite Novamente a Matrícula do Veículo: ");
+            matricula = Input.lerString(INVALID_MATR, WRITE_MATR_AGAIN);
             final String matr = matricula;
             if (veiculosMaisBaratosPeri.stream().filter(v -> v.getMatricula().equals(matr)).count() > 0){
                 correto = true;
@@ -1051,7 +1056,7 @@ public class UmCarroJaApp{
         }while (!verificaData(dataInicio, dataFim));
 
         out.print("Introduza a Matrícula do veículo pretendido");
-        matricula = Input.lerString("Matricula Inválida!", "Digite novamente a matricula do veículo: ");
+        matricula = Input.lerString(INVALID_MATR, WRITE_MATR_AGAIN);
 
         out.print("Digite a latitude de destino: ");
         latitude = Input.lerDouble(latInv, "Digite novamente a latitude: ");
@@ -1121,14 +1126,14 @@ public class UmCarroJaApp{
         }
 
         for(Veiculo v: veiculosDetAutonomia){
-            out.println("------------------------------------------------\n");
+            out.println(SEPARATOR2);
             out.println(v.toString());
-            out.println("------------------------------------------------\n");
+            out.println(SEPARATOR2);
         }
 
         do{
             out.print("Introduza a Matrícula do Veículo que Pretende Alugar: ");
-            matricula = Input.lerString("Matricula Inválida!", "Digite Novamente a Matrícula do Veículo: ");
+            matricula = Input.lerString(INVALID_MATR, WRITE_MATR_AGAIN);
             final String matr = matricula;
             if (veiculosDetAutonomia.stream().filter(v -> v.getMatricula().equals(matr)).count() > 0){
                 correto = true;
@@ -1163,13 +1168,13 @@ public class UmCarroJaApp{
         List<Aluguer> res = filterAlugueresBD(alugs, dataInicio, dataFim);
 
         UmCarroJaApp.clearScreen();
-        if (res.size() == 0) {
+        if (res.isEmpty()) {
             out.print(NO_RENTAL);
         } else {
             for (Aluguer a : res) {
-                out.println("------------------------------------------------\n");
+                out.println(SEPARATOR2);
                 out.println(a.toString());
-                out.println("------------------------------------------------\n");
+                out.println(SEPARATOR2);
             }
         }
     }
