@@ -59,6 +59,10 @@ public class CarroGasolina extends Veiculo {
         CarroGasolina cg = (CarroGasolina) obj;
         return(super.equals(cg));
     }
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
     
     /** 
      * Devolve uma representação do objeto em formato textual.

@@ -7,7 +7,6 @@ import utilizadores.Proprietario;
 import utils.Input;
 import utils.ParDatas;
 import utils.ParseDados;
-
 import java.io.*;
 import static java.lang.System.out;
 
@@ -56,8 +55,12 @@ public class UmCarroJaApp{
     private static final String INVALID_MATR = "Matricula Inválida!";
     private static final String ALREADY_REGISTED = "já está registado!";
     private static final String WRITE_MATR_AGAIN = "Digite Novamente a Matrícula do Veículo: ";
-
-
+    private static final String VEICULO = "O Veiculo ";
+    private static final String DIGITE ="Digite novamente a quantidade a abastecer: ";
+   private static final String DIGITEFIMALUG= "Digite a data de fim de aluguer (dd-mm-aaaa): ";
+    private static final String DIGITELATITUDE="Digite a latitude de destino: ";
+    private static final String DIGITELONGITUDE="Digite  a longitude de destino: ";
+    private static final String SEMVEICULOS="Não existem veículos disponíveis para alugar!\n";
     /** O construtor é privado, pois não queremos instâncias da mesma. */
     private UmCarroJaApp() {}
 
@@ -369,7 +372,7 @@ public class UmCarroJaApp{
             out.print("Digite a Data de Início (dd-mm-aaaa): ");
             dataInicio = Input.lerData("Data de Início Inválida!", "Digite Novamente a Data de Início (dd-mm-aaaa): ");
 
-            out.print("Digite a Data de Fim de Aluguer (dd-mm-aaaa): ");
+            out.print(DIGITEFIMALUG);
             dataFim = Input.lerData("Data de Fim inválida!", "Digite novamente a data de fim (dd-mm-aaaa): ");
         }while (dataFim.before(dataInicio));
 
@@ -568,7 +571,7 @@ public class UmCarroJaApp{
             UmCarroJaApp.guardarDados();
         }
         catch (VeiculoJaExisteException e) {
-            out.println("O Veiculo " + e.getMessage() +  " " + ALREADY_REGISTED+ "\n");
+            out.println(VEICULO + e.getMessage() +  " " + ALREADY_REGISTED+ "\n");
         }
     }
 
@@ -590,10 +593,10 @@ public class UmCarroJaApp{
             UmCarroJaApp.guardarDados();
         }
         catch (VeiculoNaoExisteException e) {
-            out.println("O Veiculo " + e.getMessage() +  " não existe!\n");
+            out.println(VEICULO + e.getMessage() +  " não existe!\n");
         }
         catch (VeiculoNaoESeuException e2) {
-            out.println("O Veiculo " + e2.getMessage() +  " não lhe pertence!\n");
+            out.println(VEICULO + e2.getMessage() +  " não lhe pertence!\n");
         }
     }
 
@@ -608,17 +611,17 @@ public class UmCarroJaApp{
 
 
         out.print("Digite quanto desejada a abastecer: ");
-        abast = Input.lerDouble("Quantidade Inválida!", "Digite novamente a quantidade a abastecer: ");
+        abast = Input.lerDouble("Quantidade Inválida!", DIGITE);
 
         try {
             ucj.abastecerVeiculo(matricula, abast);
             UmCarroJaApp.guardarDados();
         }
         catch (VeiculoNaoExisteException e) {
-            out.println("O Veiculo " + e.getMessage() +  " não existe!\n");
+            out.println(VEICULO + e.getMessage() +  " não existe!\n");
         }
         catch (VeiculoNaoESeuException e2) {
-            out.println("O Veiculo " + e2.getMessage() +  " não lhe pertence!\n");
+            out.println(VEICULO+ e2.getMessage() +  " não lhe pertence!\n");
         }
     }
 
@@ -639,10 +642,10 @@ public class UmCarroJaApp{
             ucj.altPrecoKm(matricula, pkm);
         }
         catch (VeiculoNaoExisteException e) {
-            out.println("O Veiculo " + e.getMessage() +  " não existe!\n");
+            out.println(VEICULO+ e.getMessage() +  " não existe!\n");
         }
         catch (VeiculoNaoESeuException e2) {
-            out.println("O Veiculo " + e2.getMessage() +  " não lhe pertence!\n");
+            out.println(VEICULO + e2.getMessage() +  " não lhe pertence!\n");
         }
     }
 
@@ -656,7 +659,7 @@ public class UmCarroJaApp{
             out.print("Digite a data de inicio (dd-mm-aaaa): ");
             dataInicio = Input.lerData("Data de inicio inválida!", "Digite novamente a data de inicio (dd-mm-aaaa): ");
 
-            out.print("Digite a data de fim de aluguer (dd-mm-aaaa): ");
+            out.print(DIGITEFIMALUG);
             dataFim = Input.lerData("Data de fim inválida!", "Digite novamente a data de fim (dd-mm-aaaa): ");
         }while (dataFim.before(dataInicio));
 
@@ -710,7 +713,7 @@ public class UmCarroJaApp{
             alugs = ucj.determinarListaAlugCli(matricula, nifCliente);
         }
         catch (VeiculoNaoESeuException e) {
-            out.println("O Veiculo " + e.getMessage() +  " não lhe pertence!\n");
+            out.println(VEICULO + e.getMessage() +  " não lhe pertence!\n");
         }
         catch (UtilizadorNaoExisteException e2) {
             out.println("O cliente " + e2.getMessage() +  " não existe!\n");
@@ -874,14 +877,14 @@ public class UmCarroJaApp{
             out.print("Digite a Data de Início do Aluguer (dd-mm-aaaa): ");
             dataInicio = Input.lerData(dataInicioInv, "Digite Novamente a Data de Início de Aluguer (dd-mm-aaaa): ");
 
-            out.print("Digite a Data de Fim de Aluguer (dd-mm-aaaa): ");
+            out.print(DIGITEFIMALUG);
             dataFim = Input.lerData("Data de Fim de Aluguer Inválida!", "Digite novamente a Data de Fim de Aluguer (dd-mm-aaaa): ");
         }while (!verificaData(dataInicio, dataFim));
 
-        out.print("Digite a Latitude do Destino: ");
+        out.print(DIGITELATITUDE);
         latitude = Input.lerDouble(latInv, "Digite Novamente a Latitude: ");
 
-        out.print("Digite  a Longitude do Destino: ");
+        out.print(DIGITELONGITUDE);
         longitude = Input.lerDouble(longInv, "Digite Novamente a Longitude: ");
 
         out.print("Digite o Número de Veículos Mais Próximos que Deseja Listar: ");
@@ -932,14 +935,14 @@ public class UmCarroJaApp{
             out.print("Digite a Data de Início de Aluguer (dd-mm-aaaa): ");
             dataInicio = Input.lerData(dataInicioInv, "Digite Novamente a Data de Início de Aluguer (dd-mm-aaaa): ");
 
-            out.print("Digite a data de fim de aluguer (dd-mm-aaaa): ");
+            out.print(DIGITEFIMALUG);
             dataFim = Input.lerData(dataInicioInv, "Digite Novamente a Data de Fim de Aluguer (dd-mm-aaaa): ");
         }while (!verificaData(dataInicio, dataFim));
 
-        out.print("Digite a latitude de destino: ");
+        out.print(DIGITELATITUDE);
         latitude = Input.lerDouble(latInv, "Digite novamente a latitude: ");
 
-        out.print("Digite  a longitude de destino: ");
+        out.print(DIGITELONGITUDE);
         longitude = Input.lerDouble(longInv, "Digite novamente a longitude: ");
 
         out.print("Quanto veiculos deseja ver: ");
@@ -992,14 +995,14 @@ public class UmCarroJaApp{
             out.print("Digite a Data de Início de Aluguer (dd-mm-aaaa): ");
             dataInicio = Input.lerData(dataInicioInv, "Digite Novamente a Data de Início de Aluguer (dd-mm-aaaa): ");
 
-            out.print("Digite a data de fim de aluguer (dd-mm-aaaa): ");
+            out.print(DIGITEFIMALUG);
             dataFim = Input.lerData(dataInicioInv, "Digite Novamente a Data de Fim de Aluguer (dd-mm-aaaa): ");
         }while (!verificaData(dataInicio, dataFim));
 
-        out.print("Digite a latitude de destino: ");
+        out.print(DIGITELATITUDE);
         latitude = Input.lerDouble(latInv, "Digite novamente a latitude: ");
 
-        out.print("Digite  a longitude de destino: ");
+        out.print(DIGITELONGITUDE);
         longitude = Input.lerDouble(longInv, "Digite novamente a longitude: ");
 
         out.print("Indique o perimetro de procura: ");
@@ -1051,17 +1054,17 @@ public class UmCarroJaApp{
             out.print("Digite a Data de Início de Aluguer (dd-mm-aaaa): ");
             dataInicio = Input.lerData(dataInicioInv, "Digite Novamente a Data de Início de Aluguer (dd-mm-aaaa): ");
 
-            out.print("Digite a data de fim de aluguer (dd-mm-aaaa): ");
+            out.print(DIGITEFIMALUG);
             dataFim = Input.lerData(dataInicioInv, "Digite Novamente a Data de Fim de Aluguer (dd-mm-aaaa): ");
         }while (!verificaData(dataInicio, dataFim));
 
         out.print("Introduza a Matrícula do veículo pretendido");
         matricula = Input.lerString(INVALID_MATR, WRITE_MATR_AGAIN);
 
-        out.print("Digite a latitude de destino: ");
+        out.print(DIGITELATITUDE);
         latitude = Input.lerDouble(latInv, "Digite novamente a latitude: ");
 
-        out.print("Digite  a longitude de destino: ");
+        out.print(DIGITELONGITUDE);
         longitude = Input.lerDouble(longInv, "Digite novamente a longitude: ");
 
         Coordinate posDestino = new Coordinate(latitude, longitude);
@@ -1087,14 +1090,14 @@ public class UmCarroJaApp{
             out.print("Digite a Data de Início de Aluguer (dd-mm-aaaa): ");
             dataInicio = Input.lerData(dataInicioInv, "Digite Novamente a Data de Início de Aluguer (dd-mm-aaaa): ");
 
-            out.print("Digite a data de fim de aluguer (dd-mm-aaaa): ");
+            out.print(DIGITEFIMALUG);
             dataFim = Input.lerData(dataInicioInv, "Digite Novamente a Data de Fim de Aluguer (dd-mm-aaaa): ");
         }while(!verificaData(dataInicio, dataFim));
 
-        out.print("Digite a latitude de destino: ");
+        out.print(DIGITELATITUDE);
         latitude = Input.lerDouble(latInv, "Digite novamente a latitude: ");
 
-        out.print("Digite  a longitude de destino: ");
+        out.print(DIGITELONGITUDE);
         longitude = Input.lerDouble(longInv, "Digite novamente a longitude: ");
 
         do {
@@ -1277,21 +1280,21 @@ public class UmCarroJaApp{
                 try {
                     v = ucj.maisBaratoJa(cords, datas, "CarroEletrico");
                 }catch(NaoExistemVeiculosDisponiveisException e){
-                    out.println("Não existem veículos disponíveis para alugar!\n");
+                    out.println(SEMVEICULOS);
                 }
             }
             if (dados[3].equals("Hibrido")){
                 try{
                     v = ucj.maisBaratoJa(cords, datas, "CarroHibrido");
                 }catch(NaoExistemVeiculosDisponiveisException e){
-                    out.println("Não existem veículos disponíveis para alugar!\n");
+                    out.println(SEMVEICULOS);
                 }
             }
             if (dados[3].equals("Gasolina")){
                 try {
                     v = ucj.maisBaratoJa(cords, datas, "CarroGasolina");
                 }catch(NaoExistemVeiculosDisponiveisException e){
-                    out.println("Não existem veículos disponíveis para alugar!\n");
+                    out.println(SEMVEICULOS);
                 }
             }
         }else{
@@ -1299,21 +1302,21 @@ public class UmCarroJaApp{
                 try{
                     v = ucj.maisPertoJa(cords.clone(), datas, "CarroEletrico");
                 }catch(NaoExistemVeiculosDisponiveisException e){
-                    out.println("Não existem veículos disponíveis para alugar!\n");
+                    out.println(SEMVEICULOS);
                 }
             }
             if (dados[3].equals("Hibrido")){
                 try{
                     v = ucj.maisPertoJa(cords.clone(), datas, "CarroHibrido");
                 }catch(NaoExistemVeiculosDisponiveisException e){
-                    out.println("Não existem veículos disponíveis para alugar!\n");
+                    out.println(SEMVEICULOS);
                 }
             }
             if (dados[3].equals("Gasolina")){
                 try{
                     v = ucj.maisPertoJa(cords.clone(), datas, "CarroGasolina");
                 }catch(NaoExistemVeiculosDisponiveisException e){
-                    out.println("Não existem veículos disponíveis para alugar!\n");
+                    out.println(SEMVEICULOS);
                 }
             }
         }

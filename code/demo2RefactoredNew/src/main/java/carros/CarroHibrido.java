@@ -57,6 +57,10 @@ public class CarroHibrido extends Veiculo {
         CarroHibrido ch = (CarroHibrido) obj;
         return(super.equals(ch));
     }
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
     
     /** 
      * Devolve uma representação do objeto em formato textual.

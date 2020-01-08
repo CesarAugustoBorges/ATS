@@ -54,7 +54,10 @@ public class Proprietario extends Utilizador {
         Proprietario prop = (Proprietario) obj;
         return super.equals(prop);
     }
-    
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
     /** 
      * Devolve uma representação do objeto em formato textual.
      * @return String Representa o objeto em formato textual.

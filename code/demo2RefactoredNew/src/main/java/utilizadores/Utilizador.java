@@ -9,6 +9,7 @@ package utilizadores; /**
 
 import java.io.Serializable;
 import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 public class Utilizador implements Serializable {
     
@@ -23,10 +24,10 @@ public class Utilizador implements Serializable {
     /* Password */
     private String password;
     /* Morada */
-    private String morada; 
-    /* Data de Nascimento */ 
-    private GregorianCalendar dataNascimento; 
-    
+    private String morada;
+    private Calendar c=Calendar.getInstance();
+    /* Data de Nascimento */
+    private GregorianCalendar dataNascimento;
     /**
      * Construtor por omissão.
      * É criada uma instância da classe Utilizador.
@@ -186,7 +187,9 @@ public class Utilizador implements Serializable {
      */
     @Override
     public String toString() {
-       StringBuilder str = new StringBuilder();
+        int y=c.get(c.YEAR);
+        int moy=c.get(c.MONTH);
+        StringBuilder str = new StringBuilder();
        
        str.append("*****    UTILIZADOR    *****\n"); 
        str.append("Nome: "); str.append(this.nome); str.append("\n");
@@ -194,9 +197,9 @@ public class Utilizador implements Serializable {
        str.append("Email: "); str.append(this.email); str.append("\n");
        str.append("Password: "); str.append(this.password); str.append("\n");
        str.append("Morada: "); str.append(this.morada); str.append("\n");
-       str.append("Data de Nascimento: "); str.append(this.dataNascimento.get(GregorianCalendar.DAY_OF_MONTH));
-       str.append("/"); str.append(this.dataNascimento.get(GregorianCalendar.MONTH) + 1); str.append("/"); 
-       str.append(this.dataNascimento.get(GregorianCalendar.YEAR)); str.append("\n");
+       str.append("Data de Nascimento: "); str.append(c.get(c.DAY_OF_MONTH));
+       str.append("/"); str.append(moy); str.append("/");
+       str.append(y); str.append("\n");
         
        return str.toString();
     }

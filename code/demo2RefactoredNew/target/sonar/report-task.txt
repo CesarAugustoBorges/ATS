@@ -2,5 +2,5 @@ projectKey=demo2Refactored:demo2Refactored
 serverUrl=http://localhost:9000
 serverVersion=7.9.1.27448
 dashboardUrl=http://localhost:9000/dashboard?id=demo2Refactored%3Ademo2Refactored
-ceTaskId=AW-BIAotRhFeMSd46ytZ
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AW-BIAotRhFeMSd46ytZ
+ceTaskId=AW-GZ73gAkjv5YvKyzQW
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AW-GZ73gAkjv5YvKyzQW

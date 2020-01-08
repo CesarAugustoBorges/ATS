@@ -59,7 +59,11 @@ public class CarroEletrico extends Veiculo {
         CarroEletrico ce = (CarroEletrico) obj;
         return(super.equals(ce));
     }
-    
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
     /** 
      * Devolve uma representação do objeto em formato textual.
      * @return String Representa o objeto em formato textual.
