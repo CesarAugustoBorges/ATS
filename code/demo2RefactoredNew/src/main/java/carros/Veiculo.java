@@ -9,7 +9,6 @@ package carros; /**
 
 import utilizadores.Classificacao;
 import utils.ParDatas;
-import utils.Weather;
 
 import java.io.Serializable;
 import java.util.stream.Collectors;
@@ -29,22 +28,13 @@ public class Veiculo implements Serializable, Classificacao {
     private String matricula;
     /* NIF do proprietário do veículo */
     private String nif;
-    /* Velocidade média por Km */
-    private int velocidade;
-    /* Preço base por Km */
-    private double preco;
-    /* Consumo por Km percorrido */
-    private double consumo;
-    /* Autonomia total do veículo */
-    private int autonomia;
-    /* Posição (Latitude / Longitude) do veículo */
-    private Coordinate posicao;
     /* Veículo disponível para alugar */
     private boolean disponivel;
     /* Classificação do veículo */
     private int classificacao;
     /* Instância da classe ParDatas que representa um par de datas, data de início e fim de um aluguer, efetuado */
     private List<ParDatas> datasAlugueres;
+    private DesempenhoVeiculo desempenhoVeiculo;
     
     /**
      * Construtor por omissão.
@@ -54,11 +44,6 @@ public class Veiculo implements Serializable, Classificacao {
         this.marca = "";
         this.matricula = "";
         this.nif = "";
-        this.velocidade = 0;
-        this.preco = 0.0;
-        this.consumo = 0.0;
-        this.autonomia = 0;
-        this.posicao = new Coordinate(0,0);
         this.disponivel = false;
         this.classificacao = 0;
         this.datasAlugueres = new ArrayList<>();
@@ -69,27 +54,18 @@ public class Veiculo implements Serializable, Classificacao {
      * @param marca       Marca do veículo.
      * @param matricula   Matrícula do veículo.
      * @param nif         NIF do veículo.
-     * @param velocidade  Velocidade média por Km.
-     * @param preco       Preço base por cada Km percorrido.
-     * @param consumo     Consumo por Km percorrido. 
-     * @param autonomia   Autonomia em Km do veículo.
-     * @param cords       Coordenadas em que o veículo se encontra.
+
      * @param disponivel  True se o veículo estiver disponível, false caso contrário.
      * @param classif     Classificação do veículo.
      * @param datasAlugs  Datas dos alugueres do veículo.
      */
-    public Veiculo(String marca, String matricula, String nif, int velocidade, double preco, double consumo, 
-                   int autonomia, Coordinate cords, boolean disponivel, int classif, List<ParDatas> datasAlugs){
+    public Veiculo(String marca, String matricula, String nif, DesempenhoVeiculo desempenhoVeiculo, boolean disponivel, int classif, List<ParDatas> datasAlugs){
         this.marca = marca;
         this.matricula = matricula;
         this.nif = nif;
-        this.velocidade = velocidade;
-        this.preco = preco;
-        this.consumo = consumo;
-        this.autonomia = autonomia;
-        this.posicao = cords;
         this.disponivel = disponivel;
         this.classificacao = classif;
+        this.desempenhoVeiculo = desempenhoVeiculo;
         this.datasAlugueres = datasAlugs.stream().map(ParDatas :: clone).collect(Collectors.toCollection(ArrayList::new));
     }
     
@@ -101,11 +77,7 @@ public class Veiculo implements Serializable, Classificacao {
         this.marca = outroVeiculo.getMarca();
         this.matricula = outroVeiculo.getMatricula();
         this.nif = outroVeiculo.getNIF();
-        this.velocidade = outroVeiculo.getVelocidade();
-        this.preco = outroVeiculo.getPreco();
-        this.consumo = outroVeiculo.getConsumo();
-        this.autonomia = outroVeiculo.getAutonomia();
-        this.posicao = outroVeiculo.getPosicao();
+        this.desempenhoVeiculo = outroVeiculo.desempenhoVeiculo;
         this.disponivel = outroVeiculo.getDisponibilidade();
         this.classificacao = outroVeiculo.getClassificacao();
         this.datasAlugueres = outroVeiculo.getDatasAlugueres();
@@ -137,31 +109,31 @@ public class Veiculo implements Serializable, Classificacao {
      * Devolve a velocidade média por Km.
      * @return int Representa a velocidade média por Km.
      */
-    public int getVelocidade(){return this.velocidade;}
+    public int getVelocidade(){return this.desempenhoVeiculo.getVelocidade();}
     
     /**
      * Devolve o preço base por Km.
      * @return double Representa o preço base por Km.
      */
-    public double getPreco(){return this.preco;}
+    public double getPreco(){return this.desempenhoVeiculo.getPreco();}
     
     /**
      * Devolve o consumo por Km percorrido.
      * @return Representa o consumo por Km percorrido.
      */
-    public double getConsumo(){return this.consumo;}
+    public double getConsumo(){return this.desempenhoVeiculo.getConsumo();}
     
     /**
      * Devolve a autonomia total do veículo.
      * @return Representa a autonomia total do veículo.
      */
-    public int getAutonomia(){return this.autonomia;}
+    public int getAutonomia(){return this.desempenhoVeiculo.getAutonomia();}
     
     /**
      * Devolve a posição (latidude e longitude) do veículo.
      * @return Coordinate Representa a posição onde se encontra o veículo. 
      */
-    public Coordinate getPosicao(){return this.posicao;}
+    public Coordinate getPosicao(){return this.desempenhoVeiculo.getPosicao();}
     
     /**
      * Devolve true caso o veículo esteja disponível ou false caso contrário.
@@ -207,27 +179,27 @@ public class Veiculo implements Serializable, Classificacao {
     /**
      * Altera o valor do campo velocidade.
      */
-    public void setVelocidade(int velocidade){this.velocidade = velocidade;}
+    public void setVelocidade(int velocidade){this.desempenhoVeiculo.setVelocidade(velocidade);}
     
     /**
      * Altera o valor do campo preço.
      */
-    public void setPreco(double preco){this.preco = preco;}
+    public void setPreco(double preco){this.desempenhoVeiculo.setPreco(preco);}
     
     /**
      * Altera o valor do campo consumo.
      */
-    public void setConsumo(double consumo){this.consumo = consumo;}
+    public void setConsumo(double consumo){this.desempenhoVeiculo.setConsumo(consumo);}
     
     /**
      * Altera o valor do campo autonomia.
      */
-    public void setAutonomia(int autonomia){this.autonomia = autonomia;}
+    public void setAutonomia(int autonomia){this.desempenhoVeiculo.setAutonomia(autonomia);}
     
     /**
      * Altera o valor do campo posição.
      */
-    public void setPosicao(Coordinate cords){this.posicao = cords;}
+    public void setPosicao(Coordinate cords){this.desempenhoVeiculo.setPosicao(cords);}
     
     /**
      * Altera o valor do campo disponível.
@@ -253,9 +225,7 @@ public class Veiculo implements Serializable, Classificacao {
      * @return int Tempo em minutos a pé até ao veículo.
      */
     public int tempoAteVeiculoPe(Coordinate posicaoCli){
-        double dist = posicaoCli.getDistancia(this.posicao);
-        Long tempo = Math.round((dist * 60) / 4 * Weather.getPercentage(this.posicao.getLatitude(), this.posicao.getLongitude()));
-        return tempo.intValue();
+        return desempenhoVeiculo.tempoAteVeiculoPe(posicaoCli);
     }
 
     /** Método que devolve o preço de uma viagem mediante uma distância recebida como parâmetro.
@@ -263,9 +233,7 @@ public class Veiculo implements Serializable, Classificacao {
      * @return int Representa o tempo em minutos da viagem.
      */
     public int tempoViagemCarro(Coordinate destino){
-        double dist = this.posicao.getDistancia(destino);
-        Long tempoMin = Math.round((dist * 60) / 70 * Weather.getPercentage(this.posicao.getLatitude(), this.posicao.getLongitude()));
-        return tempoMin.intValue();
+        return desempenhoVeiculo.tempoViagemCarro(destino);
     }
     
     /** Método que devolve o tempo a pé até ao veículo, mediante uma posição recebida como parâmetro.
@@ -273,9 +241,7 @@ public class Veiculo implements Serializable, Classificacao {
      * @return int Tempo em minutos a pé até ao veículo.
      */
     public int tempoAteVeiculoPeJa(Coordinate posicaoCli){
-        double dist = posicaoCli.getDistancia(this.posicao);
-        Long tempo = Math.round((dist * 60) / 4);
-        return Integer.valueOf(tempo.intValue());
+        return desempenhoVeiculo.tempoAteVeiculoPeJa(posicaoCli);
     }
 
     /** Método que devolve o preço de uma viagem mediante uma distância recebida como parâmetro.
@@ -283,9 +249,7 @@ public class Veiculo implements Serializable, Classificacao {
      * @return int Representa o tempo em minutos da viagem.
      */
     public int tempoViagemCarroJa(Coordinate destino){
-        double dist = this.posicao.getDistancia(destino);
-        Long tempoMin = Math.round((dist * 60));
-        return Integer.valueOf(tempoMin.intValue());
+        return desempenhoVeiculo.tempoViagemCarroJa(destino);
     }
 
     /** Método que devolve o preço de uma viagem mediante uma distância recebida como parâmetro.
@@ -293,7 +257,7 @@ public class Veiculo implements Serializable, Classificacao {
      * @return double Custo da viagem.
      */
     public double custoViagem(double dist){
-        return this.preco * dist;
+        return this.desempenhoVeiculo.getPreco() * dist;
     }
 
     /**
@@ -354,9 +318,7 @@ public class Veiculo implements Serializable, Classificacao {
         if(obj==null || obj.getClass()!=this.getClass()) return false;
         Veiculo veiculo = (Veiculo) obj;
         return this.marca.equals(veiculo.getMarca()) && this.matricula.equals(veiculo.getMatricula()) &&
-               this.nif.equals(veiculo.getNIF()) && this.velocidade == veiculo.getVelocidade() && 
-               this.preco == veiculo.getPreco() && this.consumo == veiculo.getConsumo() && 
-               this.autonomia == veiculo.getAutonomia() && this.posicao.equals(veiculo.getPosicao()) && 
+               this.nif.equals(veiculo.getNIF()) && this.desempenhoVeiculo.equals(veiculo.desempenhoVeiculo) &&
                this.disponivel == veiculo.getDisponibilidade() && this.classificacao == veiculo.getClassificacao();
     }
     
@@ -371,11 +333,11 @@ public class Veiculo implements Serializable, Classificacao {
        str.append("Marca: "); str.append(this.marca); str.append("\n");
        str.append("Matrícula: "); str.append(this.matricula); str.append("\n");
        str.append("NIF do Proprietário: "); str.append(this.nif); str.append("\n");
-       str.append("Velocidade Média: "); str.append(this.velocidade); str.append("\n");
-       str.append("Preço Base por Km: "); str.append(this.preco); str.append("\n");
-       str.append("Consumo: "); str.append(this.consumo); str.append("\n");
-       str.append("Autonomia: "); str.append(this.autonomia); str.append("\n");
-       str.append("Posição (latitude e longitude): "); str.append(this.posicao.toString()); str.append("\n");
+       str.append("Velocidade Média: "); str.append(this.desempenhoVeiculo.getVelocidade()); str.append("\n");
+       str.append("Preço Base por Km: "); str.append(this.desempenhoVeiculo.getPreco()); str.append("\n");
+       str.append("Consumo: "); str.append(this.desempenhoVeiculo.getConsumo()); str.append("\n");
+       str.append("Autonomia: "); str.append(this.desempenhoVeiculo.getAutonomia()); str.append("\n");
+       str.append("Posição (latitude e longitude): "); str.append(this.desempenhoVeiculo.getPosicao().toString()); str.append("\n");
        str.append("Disponível: "); str.append(this.disponivel); str.append("\n");
        str.append("Classificação: "); str.append(this.classificacao); str.append("\n");
         

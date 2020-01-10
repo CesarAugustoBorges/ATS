@@ -23,18 +23,13 @@ public class CarroGasolina extends Veiculo {
      * @param marca       Marca do carro a gasolina.
      * @param matricula   Matrícula do carro a gasolina.
      * @param nif         NIF do proprietário do carro a gasolina.
-     * @param velocidade  Velocidade média por Km do carro a gasolina.
-     * @param preco       Preço base por cada Km percorrido do carro a gasolina.
-     * @param consumo     Consumo por Km percorrido do carro a gasolina. 
-     * @param autonomia   Autonomia em Km do carro a gasolina.
-     * @param cords       Coordenadas em que o carro a gasolina se encontra.
      * @param disponivel  True se o carro a gasolina estiver disponível, false caso contrário.
      * @param classif     Classificação do carro a gasolina.
      * @param datasAlugs  Datas dos alugueres do carro a gasolina.
      */
-    public CarroGasolina(String marca, String matricula, String nif, int velocidade, double preco, double consumo,
-                         int autonomia, Coordinate cords, boolean disponivel, int classif, List<ParDatas> datasAlugs){
-        super(marca, matricula, nif, velocidade, preco, consumo, autonomia, cords, disponivel, classif, datasAlugs);              
+    public CarroGasolina(String marca, String matricula, String nif, DesempenhoVeiculo desempenhoVeiculo,
+                         boolean disponivel, int classif, List<ParDatas> datasAlugs){
+        super(marca, matricula, nif, desempenhoVeiculo, disponivel, classif, datasAlugs);
     }
     
     /**
@@ -70,10 +65,7 @@ public class CarroGasolina extends Veiculo {
      */
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append("***** Carro a Gasolina *****\n");
-        str.append(super.toString());
-        return str.toString();
+        return "***** Carro a Gasolina *****\n" + super.toString();
     }
     
     /**

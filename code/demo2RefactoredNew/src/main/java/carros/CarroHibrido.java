@@ -23,18 +23,13 @@ public class CarroHibrido extends Veiculo {
      * @param marca       Marca do carro híbrido.
      * @param matricula   Matrícula do carro híbrido.
      * @param nif         NIF do proprietário do carro híbrido.
-     * @param velocidade  Velocidade média por Km do carro híbrido.
-     * @param preco       Preço base por cada Km percorrido do carro híbrido.
-     * @param consumo     Consumo por Km percorrido do carro híbrido. 
-     * @param autonomia   Autonomia em Km do carro híbrido.
-     * @param cords       Coordenadas em que o carro híbrido se encontra.
      * @param disponivel  True se o carro híbrido estiver disponível, false caso contrário.
      * @param classif     Classificação do carro híbrido.
      * @param datasAlugs  Datas dos alugueres do carro híbrido.
      */
-    public CarroHibrido(String marca, String matricula, String nif, int velocidade, double preco, double consumo,
-                        int autonomia, Coordinate cords, boolean disponivel, int classif, List<ParDatas> datasAlugs){
-        super(marca, matricula, nif, velocidade, preco, consumo, autonomia, cords, disponivel, classif, datasAlugs);       
+    public CarroHibrido(String marca, String matricula, String nif, DesempenhoVeiculo desempenhoVeiculo,
+                        boolean disponivel, int classif, List<ParDatas> datasAlugs){
+        super(marca, matricula, nif, desempenhoVeiculo, disponivel, classif, datasAlugs);
     }
     
     /**
@@ -68,10 +63,7 @@ public class CarroHibrido extends Veiculo {
      */
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append("***** Carro Híbrido *****\n");
-        str.append(super.toString());
-        return str.toString();
+        return "***** Carro Híbrido *****\n" + super.toString();
     }
     
     /**

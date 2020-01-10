@@ -187,8 +187,8 @@ public class Utilizador implements Serializable {
      */
     @Override
     public String toString() {
-        int y=c.get(c.YEAR);
-        int moy=c.get(c.MONTH);
+        int y=c.get(Calendar.YEAR);
+        int moy=c.get(Calendar.MONTH);
         StringBuilder str = new StringBuilder();
        
        str.append("*****    UTILIZADOR    *****\n"); 
@@ -197,7 +197,7 @@ public class Utilizador implements Serializable {
        str.append("Email: "); str.append(this.email); str.append("\n");
        str.append("Password: "); str.append(this.password); str.append("\n");
        str.append("Morada: "); str.append(this.morada); str.append("\n");
-       str.append("Data de Nascimento: "); str.append(c.get(c.DAY_OF_MONTH));
+       str.append("Data de Nascimento: "); str.append(c.get(Calendar.DAY_OF_MONTH));
        str.append("/"); str.append(moy); str.append("/");
        str.append(y); str.append("\n");
         

@@ -23,18 +23,13 @@ public class CarroEletrico extends Veiculo {
      * @param marca       Marca do carro elétrico.
      * @param matricula   Matrícula do carro elétrico.
      * @param nif         NIF do proprietário do carro elétrico.
-     * @param velocidade  Velocidade média por Km do carro elétrico.
-     * @param preco       Preço base por cada Km percorrido do carro elétrico.
-     * @param consumo     Consumo por Km percorrido do carro elétrico. 
-     * @param autonomia   Autonomia em Km do carro elétrico.
-     * @param cords       Coordenadas em que o carro elétrico se encontra.
      * @param disponivel  True se o carro elétrico estiver disponível, false caso contrário.
      * @param classif     Classificação do carro elétrico.
      * @param datasAlugs  Datas dos alugueres do carro a gasolina.
      */
-    public CarroEletrico(String marca, String matricula, String nif, int velocidade, double preco, double consumo,
-                         int autonomia, Coordinate cords, boolean disponivel, int classif, List<ParDatas> datasAlugs){
-        super(marca, matricula, nif, velocidade, preco, consumo, autonomia, cords, disponivel, classif, datasAlugs);              
+    public CarroEletrico(String marca, String matricula, String nif, DesempenhoVeiculo desempenhoVeiculo,
+                         boolean disponivel, int classif, List<ParDatas> datasAlugs){
+        super(marca, matricula, nif, desempenhoVeiculo, disponivel, classif, datasAlugs);
     }
     
     /**
@@ -70,10 +65,7 @@ public class CarroEletrico extends Veiculo {
      */
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append("***** Carro Elétrico *****\n");
-        str.append(super.toString());
-        return str.toString();
+        return "***** Carro Elétrico *****\n" + super.toString();
     }
     
     /**

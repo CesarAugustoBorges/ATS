@@ -86,7 +86,7 @@ public class ParseDados{
                 return ce.clone();
             case "Hibrido":
                 Veiculo ch = parseCarroHibrido(linha);
-                return ch == null ? null: ch.clone();
+                return ch.clone();
             case "Gasolina":
                 Veiculo cg = parseCarroGasolina(linha);
                 return cg.clone();
@@ -95,70 +95,33 @@ public class ParseDados{
     }
 
     private static CarroEletrico parseCarroEletrico(String linha){
-        String marca;
-        String nif;
-        String matricula;
-        String [] dados = linha.split(",");
-        int velocidade;
-        int autonomia;
-        double x;
-        double y;
-        double preco;
-        double consumo;
-
-        marca = dados[1];
-        matricula = dados[2];
-        nif = dados[3];
-
-        try {
-            velocidade = Integer.parseInt(dados[4]);
-            preco = Double.parseDouble(dados[5]);
-            consumo = Double.parseDouble(dados[6]);
-            autonomia = Integer.parseInt(dados[7]);
-            x = Double.parseDouble(dados[8]);
-            y = Double.parseDouble(dados[9]);
-        }
-        catch(InputMismatchException exc){return new CarroEletrico();}
-
-        Coordinate cords = new Coordinate(x,y);
-
-        return new CarroEletrico(marca, matricula, nif, velocidade, preco, consumo,
-                autonomia, cords, true, 0, new ArrayList<ParDatas>());
+        Veiculo veiculo = parseDadosVeiculo(linha);
+        if(veiculo == null) return new CarroEletrico();
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(veiculo.getVelocidade(),
+                veiculo.getPreco(), veiculo.getConsumo(), veiculo.getAutonomia(), veiculo.getPosicao());
+        return new CarroEletrico(veiculo.getMarca(), veiculo.getMatricula(), veiculo.getNIF(), desempenhoVeiculo ,
+                veiculo.getDisponibilidade(), veiculo.getClassificacao(), new ArrayList<>());
     }
 
     private static CarroGasolina parseCarroGasolina(String linha){
-        String marca;
-        String matricula;
-        String nif;
-        String [] dados = linha.split(",");
-        int velocidade;
-        int autonomia;
-        double x;
-        double y;
-        double preco;
-        double consumo;
-
-        marca = dados[1];
-        matricula = dados[2];
-        nif = dados[3];
-
-        try {
-            velocidade = Integer.parseInt(dados[4]);
-            preco = Double.parseDouble(dados[5]);
-            consumo = Double.parseDouble(dados[6]);
-            autonomia = Integer.parseInt(dados[7]);
-            x = Double.parseDouble(dados[8]);
-            y = Double.parseDouble(dados[9]);
-        }
-        catch(InputMismatchException exc){return new CarroGasolina();}
-
-        Coordinate cords = new Coordinate(x,y);
-
-        return new CarroGasolina(marca, matricula, nif, velocidade, preco, consumo,
-                autonomia, cords, true, 0, new ArrayList<ParDatas>());
+        Veiculo veiculo = parseDadosVeiculo(linha);
+        if(veiculo == null) return new CarroGasolina();
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(veiculo.getVelocidade(),
+                veiculo.getPreco(), veiculo.getConsumo(), veiculo.getAutonomia(), veiculo.getPosicao());
+        return new CarroGasolina(veiculo.getMarca(), veiculo.getMatricula(), veiculo.getNIF(), desempenhoVeiculo ,
+                veiculo.getDisponibilidade(), veiculo.getClassificacao(), new ArrayList<>());
     }
 
     private static CarroHibrido parseCarroHibrido(String linha){
+        Veiculo veiculo = parseDadosVeiculo(linha);
+        if(veiculo == null) return new CarroHibrido();
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(veiculo.getVelocidade(),
+                veiculo.getPreco(), veiculo.getConsumo(), veiculo.getAutonomia(), veiculo.getPosicao());
+        return new CarroHibrido(veiculo.getMarca(), veiculo.getMatricula(), veiculo.getNIF(), desempenhoVeiculo ,
+                veiculo.getDisponibilidade(), veiculo.getClassificacao(), new ArrayList<>());
+    }
+
+    private static Veiculo parseDadosVeiculo(String linha){
         String marca;
         String matricula;
         String nif;
@@ -183,10 +146,8 @@ public class ParseDados{
             y = Double.parseDouble(dados[9]);
         }
         catch(InputMismatchException exc){return null;}
-
         Coordinate cords = new Coordinate(x,y);
-
-        return new CarroHibrido(marca, matricula, nif, velocidade, preco, consumo,
-                autonomia, cords, true, 0, new ArrayList<ParDatas>());
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(velocidade, preco, consumo, autonomia, cords);
+        return new Veiculo(marca, matricula, nif, desempenhoVeiculo, true, 0, new ArrayList<>());
     }
 }
