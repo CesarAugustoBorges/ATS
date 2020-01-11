@@ -27,7 +27,15 @@
       </plugin>
     </plugins>
   </build>
-  <properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.sonarsource.java</groupId>
+            <artifactId>java-frontend</artifactId>
+            <version>5.14.0.18788</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+    <properties>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
