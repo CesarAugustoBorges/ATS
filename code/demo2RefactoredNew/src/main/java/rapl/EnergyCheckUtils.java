@@ -1,5 +1,3 @@
-package rapl;
-
 import umcarro.UmCarroJaApp;
 
 import java.lang.reflect.Field;
@@ -22,7 +20,7 @@ public class EnergyCheckUtils {
 
 	public static int socketNum;
 	static {
-		System.setProperty("java.library.path", System.getProperty("user.dir"));
+		System.setProperty("java.library.path", System.getProperty("user.dir") + "/src/main/java/rapl");
 		try {
 			Field fieldSysPath = ClassLoader.class.getDeclaredField("sys_paths");
 			fieldSysPath.setAccessible(true);
@@ -44,15 +42,15 @@ public class EnergyCheckUtils {
 	public static double[] getEnergyStats() {
 		socketNum = GetSocketNum();
 		String EnergyInfo = EnergyStatCheck();
-		//System.out.println(EnergyInfo);
+		System.out.println(EnergyInfo);
 		/*One Socket*/
 		if(socketNum == 1) {
 			double[] stats = new double[3];
 			String[] energy = EnergyInfo.split("#");
 
-			stats[0] = Double.parseDouble(energy[0].replaceFirst(",","."));
-			stats[1] = Double.parseDouble(energy[1].replaceFirst(",","."));
-			stats[2] = Double.parseDouble(energy[2].replaceFirst(",","."));
+			stats[0] = Double.parseDouble(energy[0]);
+			stats[1] = Double.parseDouble(energy[1]);
+			stats[2] = Double.parseDouble(energy[2]);
 
 			return stats;
 
@@ -67,7 +65,7 @@ public class EnergyCheckUtils {
 				String[] energy = perSockEner[i].split("#");
 				for(int j = 0; j < energy.length; j++) {
 					count = i * 3 + j;	//accumulative count
-					stats[count] = Double.parseDouble(energy[j].replaceFirst(",","."));
+					stats[count] = Double.parseDouble(energy[j]);
 				}
 			}
 			return stats;
@@ -75,49 +73,17 @@ public class EnergyCheckUtils {
 
 	}
 
-	public static int fibRecursion(int n) {
-        if (n <= 1) return n;
-        else return fibRecursion(n-1) + fibRecursion(n-2);
-    }
-
-    public static int fibIteration(int n) {
-        int x = 0, y = 1, z = 1;
-        for (int i = 0; i < n; i++) {
-            x = y;
-            y = z;
-            z = x + y;
-        }
-        return x;
-    }
-
-    public static void fibonacciEnergy(int n){
-    	double[] before = getEnergyStats();
-    	//int fib = fibIteration(n);
-    	int fib = fibRecursion(n);
-    	double[] after = getEnergyStats();
-
-    	System.out.println("Fibonacci of "+n+" is "+fib+" and consumed "+(after[1]-before[1])+ "joules of CPU energy");
-    	ProfileDealloc();
-    }
-    
-    /*
-    public static void main(String[] args) {
-    	fibonacciEnergy(Integer.parseInt(args[0]));
-    }*/
-	
-    
 	public static void main(String[] args) {
 
 		double[] before = getEnergyStats();
 		try {
-			UmCarroJaApp.lerDadosTXT("logsPOO_carregamentoInicial.bak");
+			UmCarroJaApp.main(new String[]{});
 		} catch(Exception e) {
 		}
 		double[] after = getEnergyStats();
-			
-		System.out.println("Energy consumption of dram: " + (after[0] - before[0])+ " Energy consumption of cpu: " + (after[1] - before[1])+ " Energy consumption of package: " + (after[2] - before[2]));
-		
+		for(int i = 0; i < socketNum; i++) {
+			System.out.println("Power consumption of dram: " + (after[0] - before[0]) / 10.0 + " power consumption of cpu: " + (after[1] - before[1]) / 10.0 + " power consumption of package: " + (after[2] - before[2]) / 10.0);
+		}
 		ProfileDealloc();
 	}
-    
 }

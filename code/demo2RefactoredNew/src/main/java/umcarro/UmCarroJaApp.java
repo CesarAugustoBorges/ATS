@@ -172,14 +172,14 @@ public class UmCarroJaApp{
     }
 
     public static void main(String[] args){
-        initApp();
-        initMenus();
+       // initApp();
+       // initMenus();
         ucj = new UmCarroJa();
         lerDadosTXT("logsPOO_carregamentoInicial.bak");
         out.println("NÚMERO UTILIZADORES: " + ucj.getNUsers());
         out.println("NÚMERO VEÍCULOS: " + ucj.getNVeiculos());
         out.println("NÚMERO ALUGUERES: " + ucj.getNAlugs());
-        lerData();
+        /*lerData();
 
         ucj.alugueresEfetuados(dataInicioApp);
         do{
@@ -195,7 +195,7 @@ public class UmCarroJaApp{
                 default: break;
             }
         }while(menuInicial.getOpcao() != 0);
-        guardarDados();
+        guardarDados();*/
     }
 
     /******************************************************************************
