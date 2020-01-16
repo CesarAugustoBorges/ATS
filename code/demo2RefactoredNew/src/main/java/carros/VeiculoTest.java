@@ -17,7 +17,8 @@ public class VeiculoTest {
     public void getMarca() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
 
         String marca = novo.getMarca();
 
@@ -28,7 +29,8 @@ public class VeiculoTest {
     public void getMatricula() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
 
         String matricula = novo.getMatricula();
 
@@ -39,7 +41,8 @@ public class VeiculoTest {
     public void getNIF() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
 
         String nif = novo.getNIF();
 
@@ -50,7 +53,9 @@ public class VeiculoTest {
     public void getVelocidade() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         int velocidade=novo.getVelocidade();
 
@@ -61,7 +66,9 @@ public class VeiculoTest {
     public void getPreco() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         double preco = novo.getPreco();
 
@@ -72,7 +79,9 @@ public class VeiculoTest {
     public void getConsumo() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         double consumo = novo.getConsumo();
 
@@ -83,7 +92,9 @@ public class VeiculoTest {
     public void getAutonomia() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         int autonomia = novo.getAutonomia();
 
@@ -94,7 +105,9 @@ public class VeiculoTest {
     public void getPosicao() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         Coordinate cordTest = novo.getPosicao();
 
@@ -105,7 +118,9 @@ public class VeiculoTest {
     public void getDisponibilidade() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         boolean disponibilidade = novo.getDisponibilidade();
 
@@ -116,7 +131,9 @@ public class VeiculoTest {
     public void getClassificacao() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         int classificacao = novo.getClassificacao();
 
@@ -145,7 +162,9 @@ public class VeiculoTest {
     public void setMarca() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         novo.setMarca("renault");
 
@@ -156,7 +175,9 @@ public class VeiculoTest {
     public void setMatricula() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         novo.setMatricula("01-01-aa");
 
@@ -167,7 +188,9 @@ public class VeiculoTest {
     public void setNIF() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         novo.setNIF("1111111111111");
 
@@ -178,7 +201,9 @@ public class VeiculoTest {
     public void setVelocidade() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         novo.setVelocidade(4);
 
@@ -189,7 +214,9 @@ public class VeiculoTest {
     public void setPreco() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         novo.setPreco(22.22);
 
@@ -200,7 +227,9 @@ public class VeiculoTest {
     public void setConsumo() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         novo.setConsumo(8.8);
 
@@ -212,7 +241,9 @@ public class VeiculoTest {
     public void setAutonomia() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         novo.setAutonomia(12);
 
@@ -233,7 +264,9 @@ public class VeiculoTest {
     public void setDisponibilidade() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         novo.setDisponibilidade(false);
 
@@ -244,7 +277,9 @@ public class VeiculoTest {
     public void setClassificacao() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         novo.setClassificacao(1);
 
@@ -315,7 +350,9 @@ public class VeiculoTest {
     public void custoViagem() {
         Coordinate cords = new Coordinate(2,5);
         List<ParDatas> datas = new ArrayList<>();
-        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         double testPreco = novo.custoViagem(55.5);
         double actual = 55.5*2.35;
@@ -327,7 +364,9 @@ public class VeiculoTest {
     public void verificaAutonomia() {
         Coordinate cords= new Coordinate(2,5);
         List<ParDatas> datas= new ArrayList<>();
-        Veiculo novo= new Veiculo("opel","12-aa-23","1223214435",2,2.35,4.6,124,cords,true,4,datas);
+        DesempenhoVeiculo desempenhoVeiculo = new DesempenhoVeiculo(2,2.35,4.6,124,cords);
+        Veiculo novo = new Veiculo("opel","12-aa-23","1223214435",desempenhoVeiculo,true,4,datas);
+
 
         boolean a= novo.verificaAutonomia(100,200);
 

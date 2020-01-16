@@ -1,9 +1,11 @@
 package utils;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.GregorianCalendar;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ParDatasTest {
@@ -18,7 +20,7 @@ class ParDatasTest {
         GregorianCalendar g4 = new GregorianCalendar(2018, 7,2,16,30,56);
         ParDatas p2 = new ParDatas(g3,g4);
 
-        assertFalse(tester.isAvailable(p2));
+        Assertions.assertFalse(tester.isAvailable(p2));
     }
 
     @Test

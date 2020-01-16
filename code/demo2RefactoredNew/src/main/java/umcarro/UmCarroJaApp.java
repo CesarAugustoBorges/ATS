@@ -1213,7 +1213,7 @@ public class UmCarroJaApp{
 
     /********** PARSING *************/
     
-    private static void lerDadosTXT(String fichtxt){
+    public static void lerDadosTXT(String fichtxt){
         String linha = null;
         String [] linhas = null;
        
