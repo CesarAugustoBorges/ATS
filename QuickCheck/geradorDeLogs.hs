@@ -1,6 +1,8 @@
 import Test.QuickCheck
 import Dados
 import Localidades
+import System.Exit (exitSuccess)
+import System.Environment
 
 ---------- PROP ----------
 data Prop = Prop Nome Nif Email Morada
@@ -287,4 +289,16 @@ generator nProp nCli nCar nAlu nClas = do
                                         printAll alugueres
                                         printAll classificacoes
 
-main = generator 100 500 130 30 600
+main = do
+        args <- getArgs
+        if length(args) /= 5 then do 
+                                  print "Use <nProp> <nCli> <nCar> <nAlu> <nClas>"
+                                  exitSuccess
+                             else do
+                                  let nProp = read (args !! 0)::Int
+                                  let nCli  = read (args !! 1)::Int
+                                  let nCar  = read (args !! 2)::Int
+                                  let nAlu  = read (args !! 3)::Int
+                                  let nClas = read (args !! 4)::Int
+                                  if nAlu > nCar then print "Número de alugueres não pode ser maior que o número de carros"
+                                  else generator nProp nCli nCar nAlu nClas

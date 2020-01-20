@@ -1232,6 +1232,7 @@ public class UmCarroJaApp{
             UmCarroJaApp.guardarDados();
         }
         catch (IOException exc){
+            exc.printStackTrace();
             out.println("Erro ao ler ficheiro de texto!");
         }
     }
